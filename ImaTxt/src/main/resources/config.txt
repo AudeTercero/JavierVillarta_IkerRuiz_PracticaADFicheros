@@ -1,1 +1,1 @@
-PATH="./ImaTxt/src/main/resources/Almacen"
+prueba
