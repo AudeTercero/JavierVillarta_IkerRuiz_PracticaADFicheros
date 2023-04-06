@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String path = "config.txt";
+        String path = "config.txtt";
         Path ruta = Paths.get(path);
         try {
             ficheros.readLinesFiles(ruta);
