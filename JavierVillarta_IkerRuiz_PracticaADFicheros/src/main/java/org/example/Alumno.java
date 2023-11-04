@@ -89,12 +89,12 @@ public class Alumno {
 				}
 
 			} catch (IOException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			} finally {
 				try {
 					in.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			}
 		}
