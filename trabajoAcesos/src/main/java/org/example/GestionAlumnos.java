@@ -255,7 +255,7 @@ public class GestionAlumnos implements CRUD {
 		String op = null;
 		ArrayList<Alumno> alumnos = leerFich();
 
-		if (alumnos.isEmpty()) {
+		if (!alumnos.isEmpty()) {
 			for (Alumno alumno : alumnos) {
 				if (alumno.getNombre().equalsIgnoreCase(nom) && alumno.getApellidos().equalsIgnoreCase(ape)) {
 					existe = true;
