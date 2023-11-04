@@ -50,7 +50,7 @@ public class GestionProfesores implements CRUD {
 				System.out.println("Saliendo... \n");
 				break;
 			default:
-				System.out.println("Operacion no valida, prueba de nuevo.");
+				System.err.println("Operacion no valida, prueba de nuevo.");
 			}
 
 		} while (!op.equalsIgnoreCase("0"));
@@ -72,7 +72,7 @@ public class GestionProfesores implements CRUD {
 			try {
 				verif.hayAlgo(dni);
 			} catch (MisExceptions e) {
-				System.out.println(e);
+				System.err.println(e.getMessage());
 				fallo = true;
 				contError++;
 			}
@@ -88,11 +88,11 @@ public class GestionProfesores implements CRUD {
 				try {
 					verif.hayAlgo(nombre);
 				} catch (MisExceptions e) {
-					System.out.println(e);
+					System.err.println(e.getMessage());
 					fallo = true;
 					contError++;
 				}
-			} while (fallo == true && contError != 5);// fin de do while que controla si hay fallo
+			} while (fallo && contError != 5);// fin de do while que controla si hay fallo
 
 			if (contError < 5) {
 
@@ -104,11 +104,11 @@ public class GestionProfesores implements CRUD {
 					try {
 						verif.hayAlgo(direccion);
 					} catch (MisExceptions e) {
-						System.out.println(e);
+						System.err.println(e.getMessage());
 						fallo = true;
 						contError++;
 					}
-				} while (fallo == true && contError != 5);// Fin de do while que controla si hay fallo
+				} while (fallo && contError != 5);// Fin de do while que controla si hay fallo
 
 				if (contError < 5) {
 
@@ -124,11 +124,11 @@ public class GestionProfesores implements CRUD {
 							verif.esNum(telefono);
 							verif.nueveCaracteres(telefono);
 						} catch (MisExceptions e) {
-							System.out.println(e);
+							System.err.println(e.getMessage());
 							fallo = true;
 							contError++;
 						}
-					} while (fallo == true && contError != 5);// Fin de do while que controla si hay fallo
+					} while (fallo && contError != 5);// Fin de do while que controla si hay fallo
 
 					if (contError != 5) {
 
@@ -204,18 +204,18 @@ public class GestionProfesores implements CRUD {
 										System.out.println("Porfesor no eliminado");
 
 									} else {
-										System.out.println("Error, no hay esa opcion");
+										System.err.println("Error, no hay esa opcion");
 									}
 
 								} while (!opc.equalsIgnoreCase("si") && !opc.equalsIgnoreCase("no"));
 
 							} else {
-								System.out.println("Dni no encontrado");
+								System.err.println("Dni no encontrado");
 							}
 						}
 
 					} catch (MisExceptions e) {
-						System.out.println(e);
+						System.err.println(e.getMessage());
 					}
 				} else {
 					System.out.println("Ya no quedan mas profesores");
@@ -274,7 +274,7 @@ public class GestionProfesores implements CRUD {
 							} while (!salir && !dni.equalsIgnoreCase("0"));
 
 						} catch (MisExceptions mi) {
-							System.out.println(mi);
+							System.err.println(mi.getMessage());
 
 						}
 					}
@@ -312,7 +312,7 @@ public class GestionProfesores implements CRUD {
 									try {
 										verif.hayAlgo(newDni);
 									} catch (MisExceptions e) {
-										System.out.println(e);
+										System.err.println(e.getMessage());
 										dniBien = false;
 									}
 
@@ -335,7 +335,7 @@ public class GestionProfesores implements CRUD {
 								try {
 									verif.hayAlgo(newNom);
 								} catch (MisExceptions e) {
-									System.out.println(e);
+									System.err.println(e.getMessage());
 									nomBien = false;
 								}
 							} while (!nomBien);
@@ -352,7 +352,7 @@ public class GestionProfesores implements CRUD {
 								try {
 									verif.hayAlgo(newDire);
 								} catch (MisExceptions e) {
-									System.out.println(e);
+									System.err.println(e.getMessage());
 									direBien = false;
 								}
 
@@ -372,7 +372,7 @@ public class GestionProfesores implements CRUD {
 									verif.nueveCaracteres(newTel);
 									verif.esNum(newTel);
 								} catch (MisExceptions e) {
-									System.out.println(e);
+									System.err.println(e.getMessage());
 									telBien = false;
 								}
 							} while (!telBien);
@@ -384,7 +384,7 @@ public class GestionProfesores implements CRUD {
 							System.out.println("Saliendo");
 							break;
 						default:
-							System.out.println("Error, opcion inexistente");
+							System.err.println("Error, opcion inexistente");
 						}
 
 					} while (!opc.equalsIgnoreCase("0"));
@@ -556,7 +556,7 @@ public class GestionProfesores implements CRUD {
 			if (!existe) {
 				out.writeObject(profe);
 			} else {
-				System.out.println("Ese profesor ya existe. No puede haber dos Profesores con el mismo dni.");
+				System.err.println("Ese profesor ya existe. No puede haber dos Profesores con el mismo dni.");
 			}
 		} catch (IOException ex) {
 //	            ex.printStackTrace();

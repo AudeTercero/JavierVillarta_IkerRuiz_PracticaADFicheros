@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.*;
 import java.util.Scanner;
 import java.util.HashMap;
 
@@ -57,7 +58,7 @@ public class GestionCursos implements CRUD {
 			try {
 				verif.hayAlgo(nombre);
 			} catch (MisExceptions e) {
-				System.out.println(e);
+				System.err.println(e.getMessage());
 				fallo = true;
 				contError++;
 			}
@@ -74,15 +75,31 @@ public class GestionCursos implements CRUD {
 				try {
 					verif.hayAlgo(descripcion);
 				} catch (MisExceptions e) {
-					System.out.println(e);
+					System.err.println(e.getMessage());
 					fallo = true;
 					contError++;
 				}
-			} while (fallo == true && contError != 5);// fin de do while que controla si hay fallo
+			} while (fallo && contError != 5);// fin de do while que controla si hay fallo
 			if (contError != 5) {
 
-				curso = new Curso( nombre, descripcion);
+				curso = new Curso(nombre, descripcion);
 				guardarFich(curso);
+				try(PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(FICHERO,true)))){
+					pw.write("CodigoCurso: "+curso.getCodCur());
+					pw.write("\n");
+					pw.write("Nombre: "+nombre);
+					pw.write("\n");
+					pw.write("Descripcion: "+descripcion);
+					pw.write("\n");
+					pw.write("Profesor: ");
+					pw.write("\n");
+					pw.write("Alumnos: ");
+					pw.write("\n");
+					System.out.println("Curso guardado correctamente");
+				}catch(IOException e){
+					e.printStackTrace();
+
+				}
 			}
 
 		}
@@ -91,18 +108,63 @@ public class GestionCursos implements CRUD {
 	}
 
 	public void baja() {
+		System.out.println("Introduzca el nombre de curso");
+		String nombreCurso = sc.nextLine();
 
 	}
 
 	public void modificar() {
+		System.out.println("Introduzca el nombre de curso");
+		String nombreCurso = sc.nextLine();
 
 	}
 
 	public void buscar() {
+		System.out.println("Introduzca el nombre de curso");
+		String nombreCurso = sc.nextLine();
+		String cod, nom, des, prof, alu;
+		boolean encontrado = false;
+		try(BufferedReader br = new BufferedReader(new FileReader(FICHERO))){
+			while((cod = br.readLine())!=null){
+				nom = br.readLine();
+				des = br.readLine();
+				prof = br.readLine();
+				alu = br.readLine();
+				if((nom.split(":")[1].trim()).equalsIgnoreCase(nombreCurso.trim())) {
+					System.out.println("****CURSO*****");
+					System.out.println(cod);
+					System.out.println(nom);
+					System.out.println(des);
+					System.out.println(prof);
+					System.out.println(alu);
+					encontrado = true;
+				}
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+
+		}
+		if(!encontrado){
+			System.out.println("Curso no encontrado");
+		}
 
 	}
 
 	public void mostrar() {
+		String cod;
+		try(BufferedReader br = new BufferedReader(new FileReader(FICHERO))){
+			while((cod = br.readLine())!=null){
+				System.out.println("****CURSO*****");
+				System.out.println(cod);
+				System.out.println(br.readLine());
+				System.out.println(br.readLine());
+				System.out.println(br.readLine());
+				System.out.println(br.readLine());
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+
+		}
 
 	}
 	public void guardarFich(Curso curso) {
