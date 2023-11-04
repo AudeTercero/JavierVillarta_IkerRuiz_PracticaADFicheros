@@ -197,34 +197,36 @@ public class GestionAlumnos implements CRUD {
         boolean salir = false;
         String op = null;
         ArrayList<Alumno> alumnos = leerFich();
+        Alumno eliminado = null;
+        File file = new File(FICHERO);
+        DataOutputStream out = null;
 
+        do {
+            for (Alumno alumno : alumnos) {
+                if (alumno.getNombre().equalsIgnoreCase(nom) && alumno.getApellidos().equalsIgnoreCase(ape)) {
+                    existe = true;
+                    do {
+                        System.out.println("Seguro que deseas borrar el alumno? \n [S/N]");
+                        op = sc.nextLine();
 
-        for (Alumno alumno : alumnos) {
-            if (alumno.getNombre().equalsIgnoreCase(nom) && alumno.getApellidos().equalsIgnoreCase(ape)) {
-                existe = true;
-                do {
-                    System.out.println("Seguro que deseas borrar el alumno? \n [S/N]");
-                    op = sc.nextLine();
-
-                    if (op.equalsIgnoreCase("S")) {
-                        alumnos.remove(alumno);
-                        System.out.println("Alumno Borrado.");
-                        salir = true;
-                    } else if ((op.equalsIgnoreCase("N"))) {
-                        salir = true;
-                    } else {
-                        System.out.println("Entrada invalida");
-                    }
-                } while (!salir);
+                        if (op.equalsIgnoreCase("S")) {
+                            eliminado = alumno; //Guardamos el alumno ya que no podemos eliminarlo mientras iteramos pues puede fallar
+                            System.out.println("Alumno Borrado.");
+                            salir = true;
+                        } else if ((op.equalsIgnoreCase("N"))) {
+                            salir = true;
+                        } else {
+                            System.out.println("Entrada invalida");
+                        }
+                    } while (!salir);
+                }
             }
-        }
+        } while (!alumnos.isEmpty() && !salir);
 
         if (!existe) {
             System.out.println("El alumno no existe");
         } else {
-            File file = new File(FICHERO);
-            DataOutputStream out = null;
-
+            alumnos.remove(eliminado);
             try {
                 out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
                 for (Alumno alumno : alumnos) {
@@ -417,8 +419,12 @@ public class GestionAlumnos implements CRUD {
     public void mostrar() {
         ArrayList<Alumno> alumnos = leerFich();
 
-        for (Alumno a : alumnos) {
-            System.out.println(a.toString());
+        if(!alumnos.isEmpty()) {
+            for (Alumno a : alumnos) {
+                System.out.println(a.toString());
+            }
+        }else {
+            System.out.println("No hay alumnos guardados.");
         }
     }
 
@@ -459,7 +465,7 @@ public class GestionAlumnos implements CRUD {
                 try {
                     out.close();
                 } catch (IOException e) {
-                   // e.printStackTrace();
+                    // e.printStackTrace();
                 }
             }
         } else {
