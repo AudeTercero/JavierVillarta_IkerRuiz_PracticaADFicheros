@@ -110,17 +110,27 @@ public class Curso {
         this.profe = profe;
     }
 
-    public String[] getAlumnos() {
-        return alumnos;
+    public String getAlumnos() {
+        return alumnoCadena();
     }
 
     public void setAlumnos(String[] alumnos) {
         this.alumnos = alumnos;
     }
+    public String alumnoCadena(){
+        String lisAlu = "";
+        for(String s : alumnos){
+            if(lisAlu.length()==0)
+                lisAlu = s;
+            else
+                lisAlu = lisAlu +", "+s;
+        }
+        return lisAlu;
+    }
 
     @Override
     public String toString() {
-        return "Curso [codCur=" + codCur + ", nombre=" + nombre + ", descripcion=" + descripcion + ", cursos=" + alumnos
+        return "Curso [codCur=" + codCur + ", nombre=" + nombre + ", descripcion=" + descripcion + ", Profesor="+", Alumnos=" + alumnoCadena()
                 + "]";
     }
 
