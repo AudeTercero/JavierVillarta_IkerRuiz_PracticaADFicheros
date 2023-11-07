@@ -77,6 +77,9 @@ public class Curso {
 
         return cursos;
     }
+    public void addAlumno (String nom, String Ape){
+
+    }
 
     public int getCodCur() {
         return codCur;

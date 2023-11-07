@@ -27,7 +27,7 @@ public class GestionProfesores implements CRUD {
 
 		do {
 			System.out.println(
-					"\n Selecciona una opcion: \n 1.Inscribir Profesores \n 2.Borrar Profesores \n 3.Modificar Profesores \n 4.Consultar Profesores \n 5.Mostrar Profesores \n 0.Salir");
+					"\n Selecciona una opcion: \n 1.Alta Profesores \n 2.Borrar Profesores \n 3.Modificar Profesores \n 4.Buscar Profesores \n 5.Mostrar Profesores \n 0.Salir");
 			op = sc.nextLine();
 
 			switch (op) {

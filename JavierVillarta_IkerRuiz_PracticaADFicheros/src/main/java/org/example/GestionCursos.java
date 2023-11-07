@@ -17,8 +17,8 @@ public class GestionCursos implements CRUD {
         String op = null;
 
         do {
-            System.out.println("\n Selecciona una opcion: \n 1.Inscribir Cursos \n 2.Borrar Cursos "
-                    + "\n 3.Modificar Cursos \n 4.Consultar Cursos \n 5.Mostrar Cursos \n 0.Salir");
+            System.out.println("\n Selecciona una opcion: \n 1.Crear Cursos \n 2.Borrar Cursos "
+                    + "\n 3.Modificar Cursos \n 4.Buscar Cursos \n 5.Mostrar Cursos \n 0.Salir");
             op = sc.nextLine();
 
             switch (op) {

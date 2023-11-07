@@ -26,9 +26,9 @@ public class GestionAlumnos implements CRUD {
         String op = null;
 
         do {
-            System.out.println("\n Selecciona una opcion: \n 1.Inscribir Alumnos \n 2.Borrar Alumnos "
-                    + "\n 3.Modificar Alumnos \n 4.Consultar Alumnos \n 5.Mostrar Alumnos "
-                    + "\n 6.Inscribir Alumnos en Cursos \n 0.Salir");
+            System.out.println("\n Selecciona una opcion: \n 1.Alta Alumnos \n 2.Borrar Alumnos "
+                    + "\n 3.Modificar Alumnos \n 4.Buscar Alumnos \n 5.Mostrar Alumnos "
+                    + "\n 0.Salir");
             op = sc.nextLine();
 
             switch (op) {
@@ -46,9 +46,6 @@ public class GestionAlumnos implements CRUD {
                     break;
                 case "5":
                     mostrar();
-                    break;
-                case "6":
-                    inscribir();
                     break;
                 case "0":
                     System.out.println("Saliendo... \n");
@@ -426,10 +423,6 @@ public class GestionAlumnos implements CRUD {
         }else {
             System.out.println("No hay alumnos guardados.");
         }
-    }
-
-    public void inscribir() {
-
     }
 
     /*
