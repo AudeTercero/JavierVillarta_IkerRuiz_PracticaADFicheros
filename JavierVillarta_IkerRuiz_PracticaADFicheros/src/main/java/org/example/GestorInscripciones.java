@@ -166,27 +166,16 @@ public class GestorInscripciones {
     }
     public ArrayList<Profesor> leerFichProf() {
         File fichero = new File(RUTA_PROFESORES);
-        ObjectInputStream in = null;
         ArrayList<Profesor> profesores = new ArrayList<>();
-
-        try {
+        try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)))){
             if (fichero.exists()) {// Comprobamos si existe
-                in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)));
+
                 while (true) {
                     profesores.add((Profesor) in.readObject());
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (in != null) {
-                    in.close();
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
         return profesores;
@@ -194,18 +183,16 @@ public class GestorInscripciones {
     public ArrayList<Alumno> leerFichAlu() {
 
         ArrayList<Alumno> alumnos = new ArrayList<>();
-        DataInputStream in = null;
         int id = 0;
         String nom, ape, tel, dir, fech;
         File file = new File(RUTA_ALUMNOS);
 
         if (file.exists()) {
-            try {
-                in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
+            try(DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+
                 while (true) {
                     id = in.readInt();
                     if (id != -1) {
-
                         nom = in.readUTF();
                         ape = in.readUTF();
                         tel = in.readUTF();
@@ -223,12 +210,6 @@ public class GestorInscripciones {
 
             } catch (IOException e) {
                 //e.printStackTrace();
-            } finally {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    //e.printStackTrace();
-                }
             }
         }
         return alumnos;
