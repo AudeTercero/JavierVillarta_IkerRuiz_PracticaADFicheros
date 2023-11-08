@@ -59,7 +59,7 @@ public class GestorInscripciones {
             }
             cursos.remove(curso);
 
-
+                //codigo modificar curso para meter alumno en lista
             cursos.add(curso);
 
             try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS)))) {
