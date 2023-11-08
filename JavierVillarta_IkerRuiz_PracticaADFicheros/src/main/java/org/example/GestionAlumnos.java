@@ -23,7 +23,7 @@ public class GestionAlumnos implements CRUD {
     public void menu() {
         System.out.println("-- GESTION ALUMNOS --");
 
-        String op = null;
+        String op ;
 
         do {
             System.out.println("\n Selecciona una opcion: \n 1.Alta Alumnos \n 2.Borrar Alumnos "
