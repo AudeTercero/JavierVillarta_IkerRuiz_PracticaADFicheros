@@ -114,8 +114,8 @@ public class Curso {
         this.profe = profe;
     }
 
-    public String getAlumnos() {
-        return alumnoCadena();
+    public ArrayList<String> getAlumnos() {
+        return this.alumnos;
     }
 
     public void setAlumnos(ArrayList<String> alumnos) {

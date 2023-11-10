@@ -58,7 +58,7 @@ public class GestorInscripciones {
                 }
             }
             cursos.remove(curso);
-                curso.setAlumnos().add(nomApe);
+            curso.getAlumnos().add(nomApe);
 
             cursos.add(curso);
 
