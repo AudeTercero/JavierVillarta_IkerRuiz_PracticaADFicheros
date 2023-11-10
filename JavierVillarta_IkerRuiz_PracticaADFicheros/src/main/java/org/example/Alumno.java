@@ -15,7 +15,6 @@ public class Alumno {
 	private String telefono;
 	private String direccion;
 	private String fechNac;
-	private HashMap<Integer, Curso> cursos;
 	private String FICHERO = "Alumno.data";;
 
 	/**

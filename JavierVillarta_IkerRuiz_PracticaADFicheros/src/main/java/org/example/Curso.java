@@ -4,13 +4,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class Curso {
     private int codCur;
     private String nombre;
     private String descripcion;
     private String profe;
-    private String[] alumnos;
+    private ArrayList <String> alumnos;
     private static final String FICHERO = "Cursos.txt";
 
     /**
@@ -24,7 +25,7 @@ public class Curso {
 
     }
 
-    public Curso(int id, String nombre, String descripcion, String profe, String[] alumnos) {
+    public Curso(int id, String nombre, String descripcion, String profe, ArrayList <String> alumnos) {
         this.codCur = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -54,7 +55,7 @@ public class Curso {
         ArrayList<Curso> cursos = new ArrayList<>();
         String cod, nom, des;
         String prof;
-        String[] alumnos;
+        ArrayList <String> alumnos = new ArrayList<>();
 
         if (file.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(FICHERO))) {
@@ -65,7 +66,7 @@ public class Curso {
                     nom = br.readLine().split(":")[1].trim();
                     des = br.readLine().split(":")[1].trim();
                     prof = br.readLine().split(":")[1].trim();
-                    alumnos = br.readLine().split(":")[1].trim().split(",");
+                    alumnos.addAll(Arrays.asList(br.readLine().split(":")[1].trim().split(","))); //Recogemos cada nombre de alumno con un split sobre la linea leida y los metemos en un arraylist
 
                     Curso c = new Curso(id, nom, des, prof, alumnos);
                     cursos.add(c);
@@ -117,7 +118,8 @@ public class Curso {
         return alumnoCadena();
     }
 
-    public void setAlumnos(String[] alumnos) {
+    public void setAlumnos(ArrayList<String> alumnos) {
+
         this.alumnos = alumnos;
     }
     public String alumnoCadena(){
