@@ -2,6 +2,7 @@ package org.example;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class GestorInscripciones {
@@ -58,7 +59,7 @@ public class GestorInscripciones {
                 }
             }
             cursos.remove(curso);
-            curso.getAlumnos().add(nomApe);
+            curso.addAlumno(nom,ape);
 
             cursos.add(curso);
 
@@ -95,6 +96,7 @@ public class GestorInscripciones {
 
     }
     public void bajaAlumno(){
+
 
     }
     public void bajaProfesor(){
@@ -142,7 +144,8 @@ public class GestorInscripciones {
     public ArrayList<Curso> leerFichCurs() {
         File file = new File(RUTA_CURSOS);
         ArrayList<Curso> listCursos = new ArrayList<>();
-        String cod, nom, des, prof, alu;
+        ArrayList<String> listalu = new ArrayList<>();
+        String cod, nom, des, prof;
         Curso curso;
         if (file.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(RUTA_CURSOS))) {
@@ -151,8 +154,7 @@ public class GestorInscripciones {
                     nom = br.readLine().split(":")[1].trim();
                     des = br.readLine().split(":")[1].trim();
                     prof = br.readLine().split(":")[1].trim();
-                    alu = br.readLine().split(":")[1].trim();
-                    String[] listalu = alu.split(",");
+                    listalu.addAll(Arrays.asList(br.readLine().split(":")[1].trim().split(",")));
 
                     int codCurso = Integer.parseInt(cod);
                     curso = new Curso(codCurso, nom, des, prof, listalu);
