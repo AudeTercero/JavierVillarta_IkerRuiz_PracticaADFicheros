@@ -14,7 +14,6 @@ public class Profesor implements Serializable {
 	 * @param nombre
 	 * @param direccion
 	 * @param telefono
-	 * @param cursos
 	 */
 	public Profesor(String dni, String nombre, String direccion, String telefono) {
 		this.dni = dni;
