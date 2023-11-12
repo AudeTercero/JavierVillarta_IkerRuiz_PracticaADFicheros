@@ -15,7 +15,6 @@ public class Alumno {
 	private String telefono;
 	private String direccion;
 	private String fechNac;
-	private String FICHERO = "Alumno.data";;
 
 	/**
 	 * @param nombre
@@ -45,8 +44,9 @@ public class Alumno {
 	}
 
 	public int nuevoExpediente() {
+		Fichero fich = new Fichero();
 		int aux = 0;
-		ArrayList<Alumno> alumnos = leerFich();
+		ArrayList<Alumno> alumnos = fich.leerBin();
 		if (!alumnos.isEmpty()) {
 			for (Alumno a : alumnos) {
 				if (a.getNumExpediente() > aux) {
@@ -61,46 +61,7 @@ public class Alumno {
 
 	}
 
-	public ArrayList<Alumno> leerFich() {
-		File file = new File(FICHERO);
-		ArrayList<Alumno> alumnos = new ArrayList<>();
-		DataInputStream in = null;
-		int id = 0;
-		String nom, ape, tel, dir, fech;
-		if (file.exists()) {
-			try {
-				in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
-				while (true) {
-					id = in.readInt();
-					if (id != -1) {
-						nom = in.readUTF();
-						ape = in.readUTF();
-						tel = in.readUTF();
-						dir = in.readUTF();
-						fech = in.readUTF();
-					} else {
-						break;
-					}
 
-					Alumno a = new Alumno(id, nom, ape, tel, dir, fech);
-					alumnos.add(a);
-
-				}
-
-			} catch (IOException e) {
-				//e.printStackTrace();
-			} finally {
-				try {
-					in.close();
-				} catch (IOException e) {
-					//e.printStackTrace();
-				}
-			}
-		}
-
-		return alumnos;
-
-	}
 
 	public int getNumExpediente() {
 		return numExpediente;
