@@ -179,18 +179,18 @@ public class GestionProfesores implements CRUD {
 							if (exist) {
 								String opc;
 								do {
-									System.out.println("Seguro que quiere eliminar el profesor con el dni: " + dni+". Escriba si o no");
+									System.out.println("Seguro que quiere eliminar el profesor con el dni: " + dni+". \n [S/N]");
 									opc = sc.nextLine();
-									if (opc.equalsIgnoreCase("si")) {
+									if (opc.equalsIgnoreCase("S")) {
 										fich.borrarUnoSer(dni);
-									} else if (opc.equalsIgnoreCase("no")) {
+									} else if (opc.equalsIgnoreCase("N")) {
 										System.out.println("Porfesor no eliminado");
 
 									} else {
 										System.err.println("Error, no hay esa opcion");
 									}
 
-								} while (!opc.equalsIgnoreCase("si") && !opc.equalsIgnoreCase("no"));
+								} while (!opc.equalsIgnoreCase("S") && !opc.equalsIgnoreCase("N"));
 
 							} else {
 								System.err.println("Dni no encontrado");
@@ -239,12 +239,12 @@ public class GestionProfesores implements CRUD {
 							}
 							do {
 								System.out.println("Quiere modificar al profesor " + profeAux.getNombre() + " con dni "
-										+ profeAux.getDni() + " Si o No");
+										+ profeAux.getDni() + " \n [S/N]");
 								String confirm = sc.nextLine();
-								if (confirm.equalsIgnoreCase("si")) {
+								if (confirm.equalsIgnoreCase("S")) {
 									salir = true;
 
-								} else if (confirm.equalsIgnoreCase("no")) {
+								} else if (confirm.equalsIgnoreCase("N")) {
 									salir = true;
 									dni = "0";
 									System.out.println("Modificacion cancelada");
