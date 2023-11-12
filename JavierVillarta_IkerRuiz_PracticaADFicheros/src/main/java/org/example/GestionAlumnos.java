@@ -13,9 +13,10 @@ import java.util.Scanner;
 
 public class GestionAlumnos implements CRUD {
 
-    private static final String FICHERO = "Alumno.data";
+
     private Scanner sc = new Scanner(System.in);
     private static Verificaciones verif = new Verificaciones();
+    private Fichero fich = new Fichero();
 
     /*
      * Metodo menu para seleccionar las acciones requeridas a ejecutar
@@ -161,7 +162,7 @@ public class GestionAlumnos implements CRUD {
                             cont = 0;
 
                             Alumno alumno = new Alumno(nom, ape, tel, dir, fech);
-                            guardarFich(alumno);
+                            fich.guardarBin(alumno);
 
                         } else {
                             System.out.println("Has llegado a 5 intentos, saliendo...");
@@ -193,10 +194,8 @@ public class GestionAlumnos implements CRUD {
         boolean existe = false;
         boolean salir = false;
         String op = null;
-        ArrayList<Alumno> alumnos = leerFich();
+        ArrayList<Alumno> alumnos = fich.leerBin();
         Alumno eliminado = null;
-        File file = new File(FICHERO);
-        DataOutputStream out = null;
 
         do {
             for (Alumno alumno : alumnos) {
@@ -224,25 +223,7 @@ public class GestionAlumnos implements CRUD {
             System.out.println("El alumno no existe");
         } else {
             alumnos.remove(eliminado);
-            try {
-                out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
-                for (Alumno alumno : alumnos) {
-                    out.writeInt(alumno.getNumExpediente());
-                    out.writeUTF(alumno.getNombre());
-                    out.writeUTF(alumno.getApellidos());
-                    out.writeUTF(alumno.getTelefono());
-                    out.writeUTF(alumno.getDireccion());
-                    out.writeUTF(alumno.getFechNac());
-                }
-            } catch (IOException e) {
-                //e.printStackTrace();
-            } finally {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    //e.printStackTrace();
-                }
-            }
+           fich.guardarBin(alumnos);
         }
     }
 
@@ -256,7 +237,7 @@ public class GestionAlumnos implements CRUD {
         boolean salir2 = false;
         String op = null;
         String newNom, newApe, newTel, newDir, newFech;
-        ArrayList<Alumno> alumnos = leerFich();
+        ArrayList<Alumno> alumnos = fich.leerBin();
 
 
         if (!alumnos.isEmpty()) {
@@ -366,28 +347,7 @@ public class GestionAlumnos implements CRUD {
             if (!existe) {
                 System.out.println("El alumno no existe");
             } else {
-                File file = new File(FICHERO);
-                DataOutputStream out = null;
-
-                try {
-                    out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
-                    for (Alumno alumno : alumnos) {
-                        out.writeInt(alumno.getNumExpediente());
-                        out.writeUTF(alumno.getNombre());
-                        out.writeUTF(alumno.getApellidos());
-                        out.writeUTF(alumno.getTelefono());
-                        out.writeUTF(alumno.getDireccion());
-                        out.writeUTF(alumno.getFechNac());
-                    }
-                } catch (IOException e) {
-                    //e.printStackTrace();
-                } finally {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        //e.printStackTrace();
-                    }
-                }
+               fich.guardarBin(alumnos);
             }
         }
     }
@@ -399,7 +359,7 @@ public class GestionAlumnos implements CRUD {
         String ape = sc.nextLine();
         boolean existe = false;
 
-        ArrayList<Alumno> alumnos = leerFich();
+        ArrayList<Alumno> alumnos = fich.leerBin();
 
         for (Alumno alumno : alumnos) {
             if (alumno.getNombre().equalsIgnoreCase(nom) && alumno.getApellidos().equalsIgnoreCase(ape)) {
@@ -414,7 +374,7 @@ public class GestionAlumnos implements CRUD {
     }
 
     public void mostrar() {
-        ArrayList<Alumno> alumnos = leerFich();
+        ArrayList<Alumno> alumnos = fich.leerBin();
 
         if(!alumnos.isEmpty()) {
             for (Alumno a : alumnos) {
@@ -425,93 +385,5 @@ public class GestionAlumnos implements CRUD {
         }
     }
 
-    /*
-     * Metodo para guardar los atributos de un objeto alumno en un fichero binario
-     */
-    public void guardarFich(Alumno alumno) {
-        File file = new File(FICHERO);
-        DataOutputStream out = null;
-        ArrayList<Alumno> alumnos = leerFich();
-        boolean repe = false;
 
-        for (Alumno a : alumnos) {
-            if ((a.getNombre().equalsIgnoreCase(alumno.getNombre())
-                    && (a.getApellidos().equalsIgnoreCase(alumno.getApellidos())))) {
-                repe = true;
-            }
-        }
-        if (!repe) {
-
-            try {
-                out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file, true)));
-
-                out.writeInt(alumno.getNumExpediente());
-                out.writeUTF(alumno.getNombre());
-                out.writeUTF(alumno.getApellidos());
-                out.writeUTF(alumno.getTelefono());
-                out.writeUTF(alumno.getDireccion());
-                out.writeUTF(alumno.getFechNac().toString());
-
-            } catch (IOException e) {
-                //e.printStackTrace();
-            } finally {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    // e.printStackTrace();
-                }
-            }
-        } else {
-            System.out.println("Alumno ya existente.");
-        }
-
-    }
-
-    /*
-     * Metodo para guardar en un ArrayList alumnos formados por los atributos
-     * recibidos de un fichero binario
-     */
-    public ArrayList<Alumno> leerFich() {
-
-        ArrayList<Alumno> alumnos = new ArrayList<>();
-        DataInputStream in = null;
-        int id = 0;
-        String nom, ape, tel, dir, fech;
-        File file = new File(FICHERO);
-
-        if (file.exists()) {
-            try {
-                in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
-                while (true) {
-                    id = in.readInt();
-                    if (id != -1) {
-
-                        nom = in.readUTF();
-                        ape = in.readUTF();
-                        tel = in.readUTF();
-                        dir = in.readUTF();
-                        fech = in.readUTF();
-
-                        Alumno a = new Alumno(id, nom, ape, tel, dir, fech);
-
-                        alumnos.add(a);
-                    } else {
-                        break;
-                    }
-
-                }
-
-            } catch (IOException e) {
-                //e.printStackTrace();
-            } finally {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    //e.printStackTrace();
-                }
-            }
-        }
-        return alumnos;
-
-    }
 }

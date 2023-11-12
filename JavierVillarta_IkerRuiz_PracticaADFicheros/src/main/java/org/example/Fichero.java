@@ -85,7 +85,7 @@ public class Fichero {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         } finally {
             try {
                 if (in != null) {
@@ -93,7 +93,7 @@ public class Fichero {
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             }
         }
 
@@ -142,7 +142,7 @@ public class Fichero {
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         } finally {
             if (!existe) {
                 System.out.println("Profesor no encontrado");
@@ -161,7 +161,7 @@ public class Fichero {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+          // e.printStackTrace();
         }
         System.out.println("Profesor eliminado correctamente");
 
@@ -169,11 +169,93 @@ public class Fichero {
 
 
     //*****************************FICHERO BINARIO*****************************
-    public void guardarBin() {
+
+    /**
+     * Metodo para guardar los atributos de un objeto alumno en un fichero binario
+     * @param alumno lo recibe para guardarlo en un fichero binario
+     */
+    public void guardarBin(Alumno alumno) {
+        File file = new File(RUTA_ALUMNOS);
+        ArrayList<Alumno> alumnos = leerBin() ;
+        boolean repe = false;
+        for (Alumno a : alumnos) {
+            if ((a.getNombre().equalsIgnoreCase(alumno.getNombre()) && (a.getApellidos().equalsIgnoreCase(alumno.getApellidos())))) {
+                repe = true;
+            }
+        }
+        if (!repe) {
+
+            try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file, true)))){
+
+                out.writeInt(alumno.getNumExpediente());
+                out.writeUTF(alumno.getNombre());
+                out.writeUTF(alumno.getApellidos());
+                out.writeUTF(alumno.getTelefono());
+                out.writeUTF(alumno.getDireccion());
+                out.writeUTF(alumno.getFechNac().toString());
+
+            } catch (IOException e) {
+                //e.printStackTrace();
+            }
+        } else {
+            System.out.println("Alumno ya existente.");
+        }
 
     }
+    public void guardarBin(ArrayList<Alumno> alumnos){
+        File file = new File(RUTA_ALUMNOS);
+        try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))){
 
-    public void leerBin() {
+            for (Alumno alumno : alumnos) {
+                out.writeInt(alumno.getNumExpediente());
+                out.writeUTF(alumno.getNombre());
+                out.writeUTF(alumno.getApellidos());
+                out.writeUTF(alumno.getTelefono());
+                out.writeUTF(alumno.getDireccion());
+                out.writeUTF(alumno.getFechNac());
+            }
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
+    }
+
+    /**
+     * Metodo para guardar en un ArrayList alumnos formados por los atributos
+     * recibidos de un fichero binario
+     */
+    public ArrayList<Alumno> leerBin() {
+        ArrayList<Alumno> alumnos = new ArrayList<>();
+        int id = 0;
+        String nom, ape, tel, dir, fech;
+        File file = new File(RUTA_ALUMNOS);
+
+        if (file.exists()) {
+            try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))){
+
+                while (true) {
+                    id = in.readInt();
+                    if (id != -1) {
+
+                        nom = in.readUTF();
+                        ape = in.readUTF();
+                        tel = in.readUTF();
+                        dir = in.readUTF();
+                        fech = in.readUTF();
+
+                        Alumno a = new Alumno(id, nom, ape, tel, dir, fech);
+
+                        alumnos.add(a);
+                    } else {
+                        break;
+                    }
+
+                }
+
+            } catch (IOException e) {
+                //e.printStackTrace();
+            }
+        }
+        return alumnos;
 
     }
 
