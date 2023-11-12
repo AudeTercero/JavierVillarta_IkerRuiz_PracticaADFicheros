@@ -102,18 +102,21 @@ public class Fichero {
 
     public void mostrarSer() {
         File fichero = new File(RUTA_PROFESORES);
-        boolean hayProf = false;
+
         if (fichero.exists()) {
             try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)))) {
 
                 while (true) {
                     Profesor profe = (Profesor) in.readObject();
                     System.out.println("****PROFESOR****");
-                    System.out.println("Dni: " + profe.getDni());
-                    System.out.println("Nombre: " + profe.getNombre());
+                    String dni = profe.getDni();
+                    System.out.println("Dni: " + dni);
+                    String nom = profe.getNombre();
+                    System.out.println("Nombre: " + nom);
                     System.out.println("Direccion: " + profe.getDireccion());
                     System.out.println("Telefono: " + profe.getTelefono());
-                    hayProf = true;
+                    System.out.println("Cursos: "+profeCurso(nom+" "+dni));
+
                 }
             } catch (EOFException e) {
                 e.printStackTrace();
@@ -556,6 +559,31 @@ public class Fichero {
     }
 
     /**
+     * Itera los cursos que hay y si existe uno con el mismo nombre lanza una excepcion
+     * @param nomCurso
+     * @throws MisExceptions
+     */
+    public void cursRepe(String nomCurso)throws MisExceptions{
+        File file = new File(RUTA_CURSOS);
+        if(file.exists()) {
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                while ((br.readLine()) != null) {
+
+                    String nom = br.readLine().split(":")[1].trim();
+                    br.readLine();
+                    br.readLine();
+                    br.readLine();
+                    if(nom.equalsIgnoreCase(nomCurso.trim())){
+                        throw new MisExceptions("Ese curso ya existe, solo puede haber un curso con el mismo nombre");
+                    }
+                }
+            }catch(IOException e){
+               // e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * Metodo que guarda en una array y los devuelve los cursos en los que esta matriculado un alumno
      *
      * @param alumno una cadena formada por su nombre y apellido
@@ -599,6 +627,7 @@ public class Fichero {
 
         return nomCursos;
     }
+
 
 
 }

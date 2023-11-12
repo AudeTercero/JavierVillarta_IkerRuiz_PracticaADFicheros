@@ -66,6 +66,7 @@ public class GestionCursos implements CRUD {
             nombre = sc.nextLine();
             try {
                 verif.hayAlgo(nombre);
+                fich.cursRepe(nombre);
             } catch (MisExceptions e) {
                 System.err.println(e.getMessage());
                 fallo = true;
