@@ -45,6 +45,7 @@ public class GestorInscripciones {
     }
 
     public void inscribirAlumno() {
+        String op;
         System.out.println("Escriba el nombre del alumno");
         String nom = sc.nextLine();
         System.out.println("Escriba el apellido del alumno");
@@ -58,19 +59,25 @@ public class GestorInscripciones {
             for (Curso c : cursos) {
                 if (cur.equalsIgnoreCase(c.getNombre())) {
                     curso = c;
+                }
 
-                    System.out.println("Seguro que quieres inscribir a " + nom + " al curso de " + c.getNombre() + "? \n [S/N]");
-                    String op = sc.nextLine();
+                if(curso != null){
+                    do {
+                        System.out.println("Seguro que quieres inscribir a " + nom + " al curso de " + c.getNombre() + "? \n [S/N]");
+                        op = sc.nextLine();
 
-                    if (op.equalsIgnoreCase("S")) {
-                        cursos.remove(curso);
-                        curso.addAlumno(nom, ape);
-                        cursos.add(curso);
-                        System.out.println("Alumno inscrito con exito!");
+                        if (op.equalsIgnoreCase("S")) {
+                            cursos.remove(curso);
+                            curso.addAlumno(nom, ape);
+                            cursos.add(curso);
+                            System.out.println("Alumno inscrito con exito!");
 
-                    } else {
-                        System.out.println("Saliendo...");
-                    }
+                        } else if (op.equalsIgnoreCase("N")) {
+                            System.out.println("Saliendo...");
+                        } else {
+                            System.out.println("Eleccion no valida, prueba de nuevo.");
+                        }
+                    } while (!op.equalsIgnoreCase("s") && !op.equalsIgnoreCase("n"));
                 }
             }
 
@@ -98,6 +105,7 @@ public class GestorInscripciones {
     }
 
     public void inscribirProfesor() {
+        String op;
         System.out.println("Escriba el DNI del profesor");
         String dni = sc.nextLine();
 
@@ -110,18 +118,25 @@ public class GestorInscripciones {
             for (Curso c : cursos) {
                 if (cur.equalsIgnoreCase(c.getNombre())) {
                     curso = c;
-                    System.out.println("Seguro que quieres vincular a " + nom + " al curso de " + c.getNombre() + " como profesor? \n [S/N]");
-                    String op = sc.nextLine();
+                }
 
-                    if (op.equalsIgnoreCase("S")) {
-                        cursos.remove(curso);
-                        curso.setProfe(nom);
-                        cursos.add(curso);
-                        System.out.println("Profesor inscrito con exito!");
+                if(curso != null){
+                    do {
+                        System.out.println("Seguro que quieres vincular a " + nom + " al curso de " + c.getNombre() + " como profesor? \n [S/N]");
+                        op = sc.nextLine();
 
-                    } else {
-                        System.out.println("Saliendo...");
-                    }
+                        if (op.equalsIgnoreCase("S")) {
+                            cursos.remove(curso);
+                            curso.setProfe(nom);
+                            cursos.add(curso);
+                            System.out.println("Profesor inscrito con exito!");
+
+                        } else if (op.equalsIgnoreCase("N")) {
+                            System.out.println("Saliendo...");
+                        } else {
+                            System.out.println("Eleccion no valida, prueba de nuevo.");
+                        }
+                    } while (!op.equalsIgnoreCase("s") && !op.equalsIgnoreCase("n"));
                 }
             }
 
@@ -152,6 +167,7 @@ public class GestorInscripciones {
     }
 
     public void bajaAlumno() {
+        String op;
         System.out.println("Introduce el nombre del alumno que deseas borrar");
         String nom = sc.nextLine();
         System.out.println("Introduce los apellidos del alumno que deseas borrar");
@@ -167,21 +183,30 @@ public class GestorInscripciones {
             for (Curso c : cursos) {
                 if (cur.equalsIgnoreCase(c.getNombre())) {
                     curso = c;
-                    System.out.println("Seguro que quieres eliminar a " + nom + " del curso de " + c.getNombre() + "? \n [S/N]");
-                    String op = sc.nextLine();
-
-                    if (op.equalsIgnoreCase("S")) {
-                        cursos.remove(curso);
-                        if(curso.removeAlu(nom, ape)){
-                            cursos.add(curso);
-                            System.out.println("Alumno borrado con exito!");
-                        }
-
-                    } else {
-                        System.out.println("Saliendo...");
-                    }
                 }
+
+                if(curso != null){
+                    do {
+                        System.out.println("Seguro que quieres eliminar a " + nom + " del curso de " + c.getNombre() + "? \n [S/N]");
+                        op = sc.nextLine();
+
+                        if (op.equalsIgnoreCase("S")) {
+                            cursos.remove(curso);
+                            if (curso.removeAlu(nom, ape)) {
+                                cursos.add(curso);
+                                System.out.println("Alumno borrado con exito!");
+                            }
+
+                        } else if (op.equalsIgnoreCase("N")) {
+                            System.out.println("Saliendo...");
+                        } else {
+                            System.out.println("Eleccion no valida, prueba de nuevo.");
+                        }
+                    } while (!op.equalsIgnoreCase("s") && !op.equalsIgnoreCase("n"));
+                }
+
             }
+
 
             try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS)))) {
                 for (Curso c : cursos) {
@@ -209,6 +234,7 @@ public class GestorInscripciones {
     }
 
     public void bajaProfesor() {
+        String op;
         System.out.println("Escriba el DNI del profesor");
         String dni = sc.nextLine();
 
@@ -221,19 +247,26 @@ public class GestorInscripciones {
             for (Curso c : cursos) {
                 if (cur.equalsIgnoreCase(c.getNombre())) {
                     curso = c;
-                    System.out.println("Seguro que quieres desvincular a " + nom + " del curso de " + c.getNombre() + " como profesor? \n [S/N]");
-                    String op = sc.nextLine();
-
-                    if (op.equalsIgnoreCase("S")) {
-                        cursos.remove(curso);
-                        curso.setProfe("");
-                        cursos.add(curso);
-                        System.out.println("Profesor desvinculado con exito!");
-
-                    } else {
-                        System.out.println("Saliendo...");
-                    }
                 }
+                if (curso != null) {
+                    do {
+                        System.out.println("Seguro que quieres desvincular a " + nom + " del curso de " + c.getNombre() + " como profesor? \n [S/N]");
+                        op = sc.nextLine();
+
+                        if (op.equalsIgnoreCase("S")) {
+                            cursos.remove(curso);
+                            curso.setProfe("");
+                            cursos.add(curso);
+                            System.out.println("Profesor desvinculado con exito!");
+
+                        } else if (op.equalsIgnoreCase("n")) {
+                            System.out.println("Saliendo...");
+                        } else {
+                            System.out.println("Eleccion no valida, prueba de nuevo.");
+                        }
+                    } while (!op.equalsIgnoreCase("s") && !op.equalsIgnoreCase("n"));
+                }
+
             }
 
             try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS)))) {

@@ -103,17 +103,15 @@ public class GestionCursos implements CRUD {
                     e.printStackTrace();
                 }
             }
-
         }
-
-
     }
 
     public void baja() {
+        String op;
+        boolean existe = false;
         System.out.println("Introduzca el nombre de curso");
         String nombreCurso = sc.nextLine();
         ArrayList<Curso> cursos = leerFich();
-
 
         if (!cursos.isEmpty()) {
 
@@ -131,17 +129,44 @@ public class GestionCursos implements CRUD {
                         pw.write("Alumnos: " + c.getAlumnos());
                         pw.write("\n");
 
+                    } else {
+                        existe = true;
+                        do {
+                            System.out.println("Seguro que quieres eliminar este curso? \n [S/N]");
+                            op = sc.nextLine();
+
+                            if (op.equalsIgnoreCase("s")) {
+                                System.out.println("Curso borrado con exito!");
+
+                            } else if (op.equalsIgnoreCase("n")) {
+                                System.out.println("Saliendo...");
+
+                                pw.write("CodigoCurso: " + c.getCodCur());
+                                pw.write("\n");
+                                pw.write("Nombre: " + c.getNombre());
+                                pw.write("\n");
+                                pw.write("Descripcion: " + c.getDescripcion());
+                                pw.write("\n");
+                                pw.write("Profesor: " + c.getProfe());
+                                pw.write("\n");
+                                pw.write("Alumnos: " + c.getAlumnos());
+                                pw.write("\n");
+                            } else {
+                                System.out.println("Eleccion no valida, prueba de nuevo.");
+                            }
+                        } while (!op.equalsIgnoreCase("S") && !op.equalsIgnoreCase("n"));
                     }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-
-
             }
-
 
         } else {
             System.out.println("Aun no hay cursos guardados");
+        }
+
+        if (!existe){
+            System.out.println("El curso solicitado no existe");
         }
 
 
@@ -229,7 +254,6 @@ public class GestionCursos implements CRUD {
             } while (!opc.equalsIgnoreCase("0"));
 
 
-
             cursos.add(curso);
             try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(FICHERO)))) {
                 for (Curso c : cursos) {
@@ -309,7 +333,7 @@ public class GestionCursos implements CRUD {
         ArrayList<Curso> listCursos = new ArrayList<>();
         String cod, nom, des, prof, alu;
         Curso curso;
-        ArrayList<String>  auxAlu = new ArrayList<>();
+        ArrayList<String> auxAlu = new ArrayList<>();
         if (file.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(FICHERO))) {
                 while ((cod = br.readLine()) != null) {
@@ -317,8 +341,6 @@ public class GestionCursos implements CRUD {
                     nom = br.readLine().split(":")[1].trim();
                     des = br.readLine().split(":")[1].trim();
                     prof = br.readLine().split(":")[1].trim();
-                    alu = br.readLine().split(":")[1].trim();
-
                     auxAlu.addAll(Arrays.asList(br.readLine().split(":")[1].trim().split(",")));
 
                     int codCurso = Integer.parseInt(cod);
