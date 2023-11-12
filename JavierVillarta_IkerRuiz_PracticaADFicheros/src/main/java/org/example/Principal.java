@@ -1,9 +1,16 @@
 package org.example;
 
 import java.util.Scanner;
-
+/**
+ * Clase que representa el programa principal del Centro de Formación.
+ */
 public class Principal {
 
+    /**
+     * Método principal que inicia la ejecución del programa.
+     *
+     * @param args Los argumentos de la línea de comandos (no se utilizan en este programa).
+     */
     public static void main(String[] args) {
 
         System.out.println("-------------------------");
@@ -16,7 +23,7 @@ public class Principal {
 
 
         Scanner sc = new Scanner(System.in);
-        String op = null;
+        String op;
 
         do {
             System.out.println(
