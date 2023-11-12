@@ -11,8 +11,8 @@ public class GestionAlumnos implements CRUD {
     private static Verificaciones verif = new Verificaciones();
     private Fichero fich = new Fichero();
 
-    /*
-     * Metodo menu para seleccionar las acciones requeridas a ejecutar
+    /**
+     * Muestra un menu interactivo para gestionar alumnos.
      */
     public void menu() {
         System.out.println("-- GESTION ALUMNOS --");
@@ -51,9 +51,8 @@ public class GestionAlumnos implements CRUD {
         } while (!op.equalsIgnoreCase("0"));
     }
 
-    /*
-     * Metodo para dar de alta alumnos. Recoje los diferentes atributos, los valida
-     * y crea un objeto alumno que se guarda en un fichero
+    /**
+     * Metodo para crear alumnos
      */
     public void alta() {
         Scanner sc = new Scanner(System.in);
@@ -179,6 +178,9 @@ public class GestionAlumnos implements CRUD {
 
     }
 
+    /**
+     * Metodo para eliminar alumnos
+     */
     public void baja() {
         System.out.println("Introduce el nombre del alumno");
         String nom = sc.nextLine();
@@ -220,6 +222,9 @@ public class GestionAlumnos implements CRUD {
         }
     }
 
+    /**
+     * Metodo para modificar alumnos
+     */
     public void modificar() {
         System.out.println("Introduce el nombre del alumno");
         String nom = sc.nextLine();
@@ -345,6 +350,9 @@ public class GestionAlumnos implements CRUD {
         }
     }
 
+    /**
+     * Metodo para buscar alumnos
+     */
     public void buscar() {
         System.out.println("Introduce el nombre del alumno");
         String nom = sc.nextLine();
@@ -354,6 +362,9 @@ public class GestionAlumnos implements CRUD {
         fich.mostrarUnoBin(nomApe);
     }
 
+    /**
+     * Metodo para mostrar alumnos
+     */
     public void mostrar() {
         fich.mostrarBin();
     }
