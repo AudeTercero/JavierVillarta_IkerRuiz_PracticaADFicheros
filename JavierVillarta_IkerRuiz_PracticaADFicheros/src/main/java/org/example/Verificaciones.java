@@ -71,9 +71,7 @@ public class Verificaciones {
 			}
 		} else {
 			throw new MisExceptions("5Introduce una fecha valida");
-
 		}
-
 	}
 
 	/**
