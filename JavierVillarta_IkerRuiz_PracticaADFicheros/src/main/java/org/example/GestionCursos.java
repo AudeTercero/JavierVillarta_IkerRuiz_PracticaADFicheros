@@ -1,7 +1,9 @@
 package org.example;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.HashMap;
 
@@ -307,6 +309,7 @@ public class GestionCursos implements CRUD {
         ArrayList<Curso> listCursos = new ArrayList<>();
         String cod, nom, des, prof, alu;
         Curso curso;
+        ArrayList<String>  auxAlu = new ArrayList<>();
         if (file.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(FICHERO))) {
                 while ((cod = br.readLine()) != null) {
@@ -315,10 +318,11 @@ public class GestionCursos implements CRUD {
                     des = br.readLine().split(":")[1].trim();
                     prof = br.readLine().split(":")[1].trim();
                     alu = br.readLine().split(":")[1].trim();
-                    String[] listalu = alu.split(",");
+
+                    auxAlu.addAll(Arrays.asList(br.readLine().split(":")[1].trim().split(",")));
 
                     int codCurso = Integer.parseInt(cod);
-                    curso = new Curso(codCurso, nom, des, prof, listalu);
+                    curso = new Curso(codCurso, nom, des, prof, auxAlu);
                     listCursos.add(curso);
                 }
             } catch (IOException e) {
