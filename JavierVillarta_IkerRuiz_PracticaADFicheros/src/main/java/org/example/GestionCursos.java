@@ -111,65 +111,43 @@ public class GestionCursos implements CRUD {
         boolean existe = false;
         System.out.println("Introduzca el nombre de curso");
         String nombreCurso = sc.nextLine();
+        Curso curso = null;
         ArrayList<Curso> cursos = leerFich();
 
         if (!cursos.isEmpty()) {
 
-            try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(FICHERO)))) {
                 for (Curso c : cursos) {
-                    if (!c.getNombre().equalsIgnoreCase(nombreCurso.trim())) {
-                        pw.write("CodigoCurso: " + c.getCodCur());
-                        pw.write("\n");
-                        pw.write("Nombre: " + c.getNombre());
-                        pw.write("\n");
-                        pw.write("Descripcion: " + c.getDescripcion());
-                        pw.write("\n");
-                        pw.write("Profesor: " + c.getProfe());
-                        pw.write("\n");
-                        pw.write("Alumnos: " + c.getAlumnos());
-                        pw.write("\n");
-
-                    } else {
+                    if (c.getNombre().equalsIgnoreCase(nombreCurso.trim())) {
+                        curso = c;
                         existe = true;
-                        do {
-                            System.out.println("Seguro que quieres eliminar este curso? \n [S/N]");
-                            op = sc.nextLine();
-
-                            if (op.equalsIgnoreCase("s")) {
-                                System.out.println("Curso borrado con exito!");
-
-                            } else if (op.equalsIgnoreCase("n")) {
-                                System.out.println("Saliendo...");
-
-                                pw.write("CodigoCurso: " + c.getCodCur());
-                                pw.write("\n");
-                                pw.write("Nombre: " + c.getNombre());
-                                pw.write("\n");
-                                pw.write("Descripcion: " + c.getDescripcion());
-                                pw.write("\n");
-                                pw.write("Profesor: " + c.getProfe());
-                                pw.write("\n");
-                                pw.write("Alumnos: " + c.getAlumnos());
-                                pw.write("\n");
-                            } else {
-                                System.out.println("Eleccion no valida, prueba de nuevo.");
-                            }
-                        } while (!op.equalsIgnoreCase("S") && !op.equalsIgnoreCase("n"));
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                if (existe) {
+                    do {
+                        System.out.println("Seguro que quieres eliminar este curso? \n [S/N]");
+                        op = sc.nextLine();
+
+                        if (op.equalsIgnoreCase("s")) {
+                            System.out.println("Curso borrado con exito!");
+                            cursos.remove(curso);
+
+
+                        } else if (op.equalsIgnoreCase("n")) {
+                            System.out.println("Saliendo...");
+
+                        } else {
+                            System.out.println("Eleccion no valida, prueba de nuevo.");
+                        }
+                    } while (!op.equalsIgnoreCase("S") && !op.equalsIgnoreCase("n"));
+                } else {
+                    System.out.println("El curso solicitado no existe");
+                }
+
+                //FALTA EL CODIGO DE GUARDAR FICHERO
 
         } else {
             System.out.println("Aun no hay cursos guardados");
         }
-
-        if (!existe){
-            System.out.println("El curso solicitado no existe");
-        }
-
-
     }
 
     public void modificar() {
