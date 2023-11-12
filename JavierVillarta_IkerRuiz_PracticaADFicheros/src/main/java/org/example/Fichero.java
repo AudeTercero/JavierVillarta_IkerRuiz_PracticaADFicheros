@@ -169,6 +169,23 @@ public class Fichero {
         System.out.println("Profesor eliminado correctamente");
 
     }
+    public String existProfe(String dni) {
+        File fichero = new File(RUTA_PROFESORES);
+        Profesor profe;
+
+        try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)));) {
+            while (true) {
+                profe = (Profesor) in.readObject();
+                if (profe.getDni().equalsIgnoreCase(dni.trim())) {
+                    return profe.getNombre();
+                }
+
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
     //*****************************FICHERO BINARIO*****************************
@@ -326,6 +343,28 @@ public class Fichero {
         } else
             System.out.println("No hay Alumnos guardados");
 
+    }
+    public boolean existAlu(String nomApe) {
+        File file = new File(RUTA_ALUMNOS);
+        String nom, ape;
+
+        try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+            while (true) {
+                in.readInt();
+                nom = in.readUTF();
+                ape = in.readUTF();
+                in.readUTF();
+                in.readUTF();
+                in.readUTF();
+                if ((nom.trim() + ape.trim()).equalsIgnoreCase(nomApe.trim())) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+           // e.printStackTrace();
+        }
+
+        return false;
     }
 
 
