@@ -1,23 +1,25 @@
 package org.example;
 
-import java.io.*;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.HashMap;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+/**
+ * Clase que implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para gestionar cursos.
+ */
 public class GestionCursos implements CRUD {
-    private HashMap<String, Curso> cursos = new HashMap<>();
     private Fichero fich = new Fichero();
     private Scanner sc = new Scanner(System.in);
     private Verificaciones verif = new Verificaciones();
 
-
+    /**
+     * Muestra un menu interactivo para gestionar cursos.
+     */
     public void menu() {
         System.out.println("-- GESTION CURSOS --");
 
-        String op = null;
+        String op ;
 
         do {
             System.out.println("\n Selecciona una opcion: \n 1.Crear Cursos \n 2.Borrar Cursos "
@@ -50,6 +52,9 @@ public class GestionCursos implements CRUD {
         } while (!op.equalsIgnoreCase("0"));
     }
 
+    /**
+     * Metodo para crear cursos
+     */
     public void alta() {
         Curso curso;
         String nombre, descripcion;
@@ -93,6 +98,9 @@ public class GestionCursos implements CRUD {
         }
     }
 
+    /**
+     * Metodo para eliminar cursos
+     */
     public void baja() {
         String op;
         boolean existe = false;
@@ -137,6 +145,9 @@ public class GestionCursos implements CRUD {
         }
     }
 
+    /**
+     * Metodo para modificar cursos
+     */
     public void modificar() {
         System.out.println("Introduzca el nombre de curso");
         String nombreCurso = sc.nextLine();
@@ -226,6 +237,9 @@ public class GestionCursos implements CRUD {
         }
     }
 
+    /**
+     * Metodo para buscar cursos
+     */
     public void buscar() {
         System.out.println("Introduzca el nombre de curso");
         String nombreCurso = sc.nextLine();
@@ -233,6 +247,9 @@ public class GestionCursos implements CRUD {
 
     }
 
+    /**
+     * Metodo para mostrar cursos
+     */
     public void mostrar() {
        fich.mostrarText();
 

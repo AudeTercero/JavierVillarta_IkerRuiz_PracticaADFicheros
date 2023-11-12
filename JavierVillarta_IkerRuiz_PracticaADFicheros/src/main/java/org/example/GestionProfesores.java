@@ -2,29 +2,24 @@ package org.example;
 
 import java.util.Scanner;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
+/**
+ * Clase que implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para gestionar profesores.
+ */
 public class GestionProfesores implements CRUD {
 
 	private static Scanner sc = new Scanner(System.in);
 	private static Verificaciones verif = new Verificaciones();
 	private Fichero fich = new Fichero();
 
+	/**
+	 * Muestra un menu interactivo para gestionar profesores.
+	 */
 	public void menu() {
 		System.out.println("-- GESTION PROFESORES --");
 
-		String op = null;
+		String op ;
 
 		do {
 			System.out.println(
@@ -58,7 +53,7 @@ public class GestionProfesores implements CRUD {
 	}
 
 	/**
-	 * 
+	 * Realiza la operacion de dar de alta a un profesor.
 	 */
 	public void alta() {
 		Profesor profe;
