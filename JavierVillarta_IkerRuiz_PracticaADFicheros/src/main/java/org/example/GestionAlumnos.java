@@ -218,6 +218,7 @@ public class GestionAlumnos implements CRUD {
             System.out.println("El alumno no existe");
         } else {
             alumnos.remove(eliminado);
+            fich.borrAluCurso(eliminado.getNombre()+" "+eliminado.getApellidos());
             fich.guardarBin(alumnos);
         }
     }

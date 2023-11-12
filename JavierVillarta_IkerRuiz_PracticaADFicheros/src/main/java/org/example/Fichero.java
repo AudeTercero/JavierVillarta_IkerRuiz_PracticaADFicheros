@@ -135,9 +135,11 @@ public class Fichero {
                 if (dni.equalsIgnoreCase(profe.getDni())) {
                     System.out.println("****PROFESOR****");
                     System.out.println("Dni: " + profe.getDni());
-                    System.out.println("Nombre: " + profe.getNombre());
+                    String nom = profe.getNombre();
+                    System.out.println("Nombre: " + nom);
                     System.out.println("Direccion: " + profe.getDireccion());
                     System.out.println("Telefono: " + profe.getTelefono());
+                    System.out.println("Cursos: "+profeCurso(nom+" "+dni));
 
                     existe = true;
                 }
@@ -160,8 +162,8 @@ public class Fichero {
                 if (!dni.equalsIgnoreCase(p.getDni())) {
                     out.writeObject(p);
 
-                }else{
-                   borrProfCurso(p.getNombre()+" "+dni);
+                } else {
+                    borrProfCurso(p.getNombre() + " " + dni);
                 }
             }
 
@@ -508,33 +510,48 @@ public class Fichero {
 
     }
 
+    /**
+     * Elimina los el alumno de los cursos en los que aperezca
+     * @param nomApe recibe el nombre y el apellido
+     */
     public void borrAluCurso(String nomApe) {
         ArrayList<Curso> cursos = leerText();
-        ArrayList<String> nomCursos = new ArrayList<>();
-        for (Curso c : cursos) {
-            for (String s : c.getAlumnos()) {
-                if (nomApe.equalsIgnoreCase(s)) {
-                    c.removeAlu(s.split(" ")[0], s.split(" ")[1]);
+        if (!cursos.isEmpty()) {
+            for (Curso c : cursos) {
+                for (String s : c.getAlumnos()) {
+                    if (nomApe.equalsIgnoreCase(s)) {
+                        c.removeAlu(s.split(" ")[0], s.split(" ")[1]);
 
+                    }
                 }
             }
+            guardarText(cursos);
+
         }
-        guardarText(cursos);
+
 
     }
 
+    /**
+     * Elimina los el porfesor de los cursos en los que aperezca
+     * @param nomDni recibe el nombre y el dni
+     */
     public void borrProfCurso(String nomDni) {
         ArrayList<Curso> cursos = leerText();
         ArrayList<String> nomCursos = new ArrayList<>();
-        for (Curso c : cursos) {
+        if (!cursos.isEmpty()) {
+            for (Curso c : cursos) {
 
-            if (nomDni.equalsIgnoreCase(c.getProfe())) {
-                c.setProfe("");
+                if (nomDni.equalsIgnoreCase(c.getProfe())) {
+                    c.setProfe("");
+
+                }
 
             }
+            guardarText(cursos);
 
         }
-        guardarText(cursos);
+
 
     }
 
@@ -547,16 +564,19 @@ public class Fichero {
     private ArrayList<String> aluCurso(String alumno) {
         ArrayList<Curso> cursos = leerText();
         ArrayList<String> nomCursos = new ArrayList<>();
+        if (!cursos.isEmpty()) {
+            for (Curso c : cursos) {
+                for (String s : c.getAlumnos()) {
+                    if (alumno.equalsIgnoreCase(s)) {
+                        nomCursos.add(c.getNombre());
 
-        for (Curso c : cursos) {
-            for (String s : c.getAlumnos()) {
-                if (alumno.equalsIgnoreCase(s)) {
-                    nomCursos.add(c.getNombre());
-
+                    }
                 }
             }
+
         }
-        return null;
+
+        return nomCursos;
     }
 
     /**
@@ -568,10 +588,16 @@ public class Fichero {
     private ArrayList<String> profeCurso(String profe) { //OJO HAY QUE MODIFICAR EL METODO DE GESiNSCRIPCIONES PARA QUE ESTO FUNCIONES NOMBRE + DNI
         ArrayList<Curso> cursos = leerText();
         ArrayList<String> nomCursos = new ArrayList<>();
-        for (Curso c : cursos) {
-            if (profe.equalsIgnoreCase(c.getProfe())) ;
+        if (!cursos.isEmpty()) {
+            for (Curso c : cursos) {
+                if (profe.equalsIgnoreCase(c.getProfe())){
+                    nomCursos.add(profe);
+                }
+            }
+
         }
-        return null;
+
+        return nomCursos;
     }
 
 

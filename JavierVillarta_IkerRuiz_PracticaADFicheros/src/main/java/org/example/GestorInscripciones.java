@@ -108,7 +108,7 @@ public class GestorInscripciones {
 
                         if (op.equalsIgnoreCase("S")) {
                             cursos.remove(curso);
-                            curso.setProfe(nom);
+                            curso.setProfe(nom+" "+dni);
                             cursos.add(curso);
                             System.out.println("Profesor inscrito con exito!");
 
