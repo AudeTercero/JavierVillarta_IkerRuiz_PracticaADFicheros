@@ -1,8 +1,8 @@
 package org.example;
 
-import java.awt.print.PageFormat;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Fichero {
     private static final String RUTA_CURSOS = "Cursos.txt";
@@ -330,12 +330,133 @@ public class Fichero {
 
 
     //******************************FICHERO TEXTO******************************
-    public void guardarText() {
+    public void guardarText(Curso curso) {
+        ArrayList<Curso> cursos = leerText();
+        boolean repe = false;
+        for(Curso a: cursos){
+            if(curso.getNombre().equalsIgnoreCase(a.getNombre())){
+                repe = true;
+            }
+
+        }
+        if(!repe) {
+            try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS, true)))) {
+                pw.write("CodigoCurso: " + curso.getCodCur());
+                pw.write("\n");
+                pw.write("Nombre: " + curso.getNombre());
+                pw.write("\n");
+                pw.write("Descripcion: " + curso.getDescripcion());
+                pw.write("\n");
+                pw.write("Profesor: ");
+                pw.write("\n");
+                pw.write("Alumnos: ");
+                pw.write("\n");
+                System.out.println("Curso guardado correctamente");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            System.out.println("Ese Curso ya existe");
+        }
+
+    }
+    public void guardarText(ArrayList<Curso> cursos){
+        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS, true)))) {
+            for(Curso curso: cursos){
+                pw.write("CodigoCurso: " + curso.getCodCur());
+                pw.write("\n");
+                pw.write("Nombre: " + curso.getNombre());
+                pw.write("\n");
+                pw.write("Descripcion: " + curso.getDescripcion());
+                pw.write("\n");
+                pw.write("Profesor: ");
+                pw.write("\n");
+                pw.write("Alumnos: ");
+                pw.write("\n");
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    public void leerSerText() {
+    public ArrayList<Curso> leerText() {
+        File file = new File(RUTA_CURSOS);
+        ArrayList<Curso> listCursos = new ArrayList<>();
+        String cod, nom, des, prof;
+        Curso curso;
+        ArrayList<String> auxAlu = new ArrayList<>();
+        if (file.exists()) {
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                while ((cod = br.readLine()) != null) {
+                    cod = cod.split(":")[1].trim();
+                    nom = br.readLine().split(":")[1].trim();
+                    des = br.readLine().split(":")[1].trim();
+                    prof = br.readLine().split(":")[1].trim();
+                    auxAlu.addAll(Arrays.asList(br.readLine().split(":")[1].trim().split(",")));
+
+                    int codCurso = Integer.parseInt(cod);
+                    curso = new Curso(codCurso, nom, des, prof, auxAlu);
+                    listCursos.add(curso);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return listCursos;
 
     }
+    public void mostrarText(){
+        File file = new File(RUTA_CURSOS);
+        String cod;
+        if(file.exists()) {
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                while ((cod = br.readLine()) != null) {
+                    System.out.println("****CURSO*****");
+                    System.out.println(cod);
+                    System.out.println(br.readLine());
+                    System.out.println(br.readLine());
+                    System.out.println(br.readLine());
+                    System.out.println(br.readLine());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
+        }else{
+            System.out.println("Aun no hay Cursos guardados");
+        }
+    }
+    public void mostrarUnoText(String nombreCurso){
+        String cod, nom, des, prof, alu;
+        boolean encontrado = false;
+        try (BufferedReader br = new BufferedReader(new FileReader(RUTA_CURSOS))) {
+            while ((cod = br.readLine()) != null) {
+                nom = br.readLine();
+                des = br.readLine();
+                prof = br.readLine();
+                alu = br.readLine();
+                if ((nom.split(":")[1].trim()).equalsIgnoreCase(nombreCurso.trim())) {
+                    System.out.println("****CURSO*****");
+                    System.out.println(cod);
+                    System.out.println(nom);
+                    System.out.println(des);
+                    System.out.println(prof);
+                    System.out.println(alu);
+                    encontrado = true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+        if (!encontrado) {
+            System.out.println("Curso no encontrado");
+        }
+
+    }
+
 
 }

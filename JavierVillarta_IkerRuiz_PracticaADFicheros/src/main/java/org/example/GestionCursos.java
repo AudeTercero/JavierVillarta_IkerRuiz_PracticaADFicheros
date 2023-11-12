@@ -9,9 +9,10 @@ import java.util.HashMap;
 
 public class GestionCursos implements CRUD {
     private HashMap<String, Curso> cursos = new HashMap<>();
-    private static final String FICHERO = "Cursos.txt";
+    private Fichero fich = new Fichero();
     private Scanner sc = new Scanner(System.in);
     private Verificaciones verif = new Verificaciones();
+
 
     public void menu() {
         System.out.println("-- GESTION CURSOS --");
@@ -87,21 +88,7 @@ public class GestionCursos implements CRUD {
 
                 curso = new Curso(nombre, descripcion);
 
-                try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(FICHERO, true)))) {
-                    pw.write("CodigoCurso: " + curso.getCodCur());
-                    pw.write("\n");
-                    pw.write("Nombre: " + nombre);
-                    pw.write("\n");
-                    pw.write("Descripcion: " + descripcion);
-                    pw.write("\n");
-                    pw.write("Profesor: ");
-                    pw.write("\n");
-                    pw.write("Alumnos: ");
-                    pw.write("\n");
-                    System.out.println("Curso guardado correctamente");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                fich.guardarText(curso);
             }
         }
     }
@@ -112,38 +99,38 @@ public class GestionCursos implements CRUD {
         System.out.println("Introduzca el nombre de curso");
         String nombreCurso = sc.nextLine();
         Curso curso = null;
-        ArrayList<Curso> cursos = leerFich();
+        ArrayList<Curso> cursos = fich.leerText();
 
         if (!cursos.isEmpty()) {
 
-                for (Curso c : cursos) {
-                    if (c.getNombre().equalsIgnoreCase(nombreCurso.trim())) {
-                        curso = c;
-                        existe = true;
+            for (Curso c : cursos) {
+                if (c.getNombre().equalsIgnoreCase(nombreCurso.trim())) {
+                    curso = c;
+                    existe = true;
+                }
+            }
+            if (existe) {
+                do {
+                    System.out.println("Seguro que quieres eliminar este curso? \n [S/N]");
+                    op = sc.nextLine();
+
+                    if (op.equalsIgnoreCase("s")) {
+                        System.out.println("Curso borrado con exito!");
+                        cursos.remove(curso);
+
+
+                    } else if (op.equalsIgnoreCase("n")) {
+                        System.out.println("Saliendo...");
+
+                    } else {
+                        System.out.println("Eleccion no valida, prueba de nuevo.");
                     }
-                }
-                if (existe) {
-                    do {
-                        System.out.println("Seguro que quieres eliminar este curso? \n [S/N]");
-                        op = sc.nextLine();
+                } while (!op.equalsIgnoreCase("S") && !op.equalsIgnoreCase("n"));
+            } else {
+                System.out.println("El curso solicitado no existe");
+            }
 
-                        if (op.equalsIgnoreCase("s")) {
-                            System.out.println("Curso borrado con exito!");
-                            cursos.remove(curso);
-
-
-                        } else if (op.equalsIgnoreCase("n")) {
-                            System.out.println("Saliendo...");
-
-                        } else {
-                            System.out.println("Eleccion no valida, prueba de nuevo.");
-                        }
-                    } while (!op.equalsIgnoreCase("S") && !op.equalsIgnoreCase("n"));
-                } else {
-                    System.out.println("El curso solicitado no existe");
-                }
-
-                //FALTA EL CODIGO DE GUARDAR FICHERO
+            fich.guardarText(cursos);
 
         } else {
             System.out.println("Aun no hay cursos guardados");
@@ -153,7 +140,7 @@ public class GestionCursos implements CRUD {
     public void modificar() {
         System.out.println("Introduzca el nombre de curso");
         String nombreCurso = sc.nextLine();
-        ArrayList<Curso> cursos = leerFich();
+        ArrayList<Curso> cursos = fich.leerText();
         Curso curso = null;
 
 
@@ -233,25 +220,7 @@ public class GestionCursos implements CRUD {
 
 
             cursos.add(curso);
-            try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(FICHERO)))) {
-                for (Curso c : cursos) {
-
-                    pw.write("CodigoCurso: " + c.getCodCur());
-                    pw.write("\n");
-                    pw.write("Nombre: " + c.getNombre());
-                    pw.write("\n");
-                    pw.write("Descripcion: " + c.getDescripcion());
-                    pw.write("\n");
-                    pw.write("Profesor: " + c.getProfe());
-                    pw.write("\n");
-                    pw.write("Alumnos: " + c.getAlumnos());
-                    pw.write("\n");
-
-
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            fich.guardarText(cursos);
         } else {
             System.out.println("Aun no hay cursos guardados");
         }
@@ -260,75 +229,14 @@ public class GestionCursos implements CRUD {
     public void buscar() {
         System.out.println("Introduzca el nombre de curso");
         String nombreCurso = sc.nextLine();
-        String cod, nom, des, prof, alu;
-        boolean encontrado = false;
-        try (BufferedReader br = new BufferedReader(new FileReader(FICHERO))) {
-            while ((cod = br.readLine()) != null) {
-                nom = br.readLine();
-                des = br.readLine();
-                prof = br.readLine();
-                alu = br.readLine();
-                if ((nom.split(":")[1].trim()).equalsIgnoreCase(nombreCurso.trim())) {
-                    System.out.println("****CURSO*****");
-                    System.out.println(cod);
-                    System.out.println(nom);
-                    System.out.println(des);
-                    System.out.println(prof);
-                    System.out.println(alu);
-                    encontrado = true;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        }
-        if (!encontrado) {
-            System.out.println("Curso no encontrado");
-        }
+        fich.mostrarUnoText(nombreCurso);
 
     }
 
     public void mostrar() {
-        String cod;
-        try (BufferedReader br = new BufferedReader(new FileReader(FICHERO))) {
-            while ((cod = br.readLine()) != null) {
-                System.out.println("****CURSO*****");
-                System.out.println(cod);
-                System.out.println(br.readLine());
-                System.out.println(br.readLine());
-                System.out.println(br.readLine());
-                System.out.println(br.readLine());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        }
+       fich.mostrarText();
 
     }
 
-    public ArrayList<Curso> leerFich() {
-        File file = new File(FICHERO);
-        ArrayList<Curso> listCursos = new ArrayList<>();
-        String cod, nom, des, prof, alu;
-        Curso curso;
-        ArrayList<String> auxAlu = new ArrayList<>();
-        if (file.exists()) {
-            try (BufferedReader br = new BufferedReader(new FileReader(FICHERO))) {
-                while ((cod = br.readLine()) != null) {
-                    cod = cod.split(":")[1].trim();
-                    nom = br.readLine().split(":")[1].trim();
-                    des = br.readLine().split(":")[1].trim();
-                    prof = br.readLine().split(":")[1].trim();
-                    auxAlu.addAll(Arrays.asList(br.readLine().split(":")[1].trim().split(",")));
 
-                    int codCurso = Integer.parseInt(cod);
-                    curso = new Curso(codCurso, nom, des, prof, auxAlu);
-                    listCursos.add(curso);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return listCursos;
-    }
 }
