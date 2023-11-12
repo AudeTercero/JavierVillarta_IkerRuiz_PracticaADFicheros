@@ -19,6 +19,7 @@ public class GestionProfesores implements CRUD {
 	private static final String FICHERO = "Profesores.ser";
 	private static Scanner sc = new Scanner(System.in);
 	private static Verificaciones verif = new Verificaciones();
+	private Fichero fich = new Fichero();
 
 	public void menu() {
 		System.out.println("-- GESTION PROFESORES --");
@@ -133,7 +134,7 @@ public class GestionProfesores implements CRUD {
 					if (contError != 5) {
 
 						profe = new Profesor(dni, nombre, direccion, telefono);
-						guardarFich(profe);
+						fich.guardarSer(profe);
 					}
 
 				} else {
@@ -154,15 +155,16 @@ public class GestionProfesores implements CRUD {
 	 * Metodo para dar de baja a profesores
 	 */
 	public void baja() {
-		File fichero = new File(FICHERO);
-		ArrayList<Profesor> profesores = leerFich();
+
+
+		ArrayList<Profesor> profesores = fich.leerSer();
 		String dni = null;
 
 		if (!profesores.isEmpty()) {
 			do {
 				boolean exist = false;
-				ObjectOutputStream out = null;
-				profesores = leerFich();
+
+				profesores = fich.leerSer();
 				if (!profesores.isEmpty()) {
 					System.out.println("Introduce el dni del Profesor que quiera dar de baja o pulsa 0 para salir");
 					dni = sc.nextLine();
@@ -180,26 +182,7 @@ public class GestionProfesores implements CRUD {
 									System.out.println("Seguro que quiere eliminar el profesor con el dni: " + dni+". Escriba si o no");
 									opc = sc.nextLine();
 									if (opc.equalsIgnoreCase("si")) {
-										try {
-											out = new ObjectOutputStream(
-													new BufferedOutputStream(new FileOutputStream(fichero)));
-											for (Profesor p : profesores) {
-												if (!dni.equalsIgnoreCase(p.getDni())) {
-													out.writeObject(p);
-
-												}
-											}
-
-										} catch (Exception e) {
-											e.printStackTrace();
-										} finally {
-											try {
-												out.close();
-											} catch (IOException e) {
-												e.fillInStackTrace();
-											}
-										}
-										System.out.println("Profesor eliminado correctamente");
+										fich.borrarUnoSer(dni);
 									} else if (opc.equalsIgnoreCase("no")) {
 										System.out.println("Porfesor no eliminado");
 
@@ -233,9 +216,7 @@ public class GestionProfesores implements CRUD {
 	 * Metodo para modificar la informacion de un profesor
 	 */
 	public void modificar() {
-		File fichero = new File(FICHERO);
-		ObjectOutputStream out = null;
-		ArrayList<Profesor> profesores = leerFich();
+		ArrayList<Profesor> profesores = fich.leerSer();
 		Profesor profeAux = null;
 		String dni;
 		if (!profesores.isEmpty()) {// Comprobamos que hay profesores guardados
@@ -391,21 +372,7 @@ public class GestionProfesores implements CRUD {
 
 					profesores.add(profeAux);
 
-					try {
-						out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(fichero)));
-						for (Profesor p : profesores) {
-							out.writeObject(p);
-						}
-
-					} catch (Exception e) {
-						e.printStackTrace();
-					} finally {
-						try {
-							out.close();
-						} catch (Exception e) {
-
-						}
-					}
+					fich.guardarSer(profesores);
 				}
 
 			} while (!dni.equalsIgnoreCase("0"));
@@ -424,29 +391,7 @@ public class GestionProfesores implements CRUD {
 		do {
 			System.out.println("Introduce el dni del profesor que quiera buscar o pulsa 0 para salir");
 			dni = sc.nextLine();
-			ObjectInputStream in = null;
-			Profesor profe;
-			boolean existe = false;
-			try {
-				in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(FICHERO)));
-				while (true) {
-					profe = (Profesor) in.readObject();
-					if (dni.equalsIgnoreCase(profe.getDni())) {
-						System.out.println("****PROFESOR****");
-						System.out.println("Dni: " + profe.getDni());
-						System.out.println("Nombre: " + profe.getNombre());
-						System.out.println("Direccion: " + profe.getDireccion());
-						System.out.println("Telefono: " + profe.getTelefono());
-						existe = true;
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				if (!existe) {
-					System.out.println("Profesor no encontrado");
-				}
-			}
+			fich.mostrarUnoSer(dni.trim());
 		} while (!dni.equalsIgnoreCase("0"));
 
 	}
@@ -455,119 +400,7 @@ public class GestionProfesores implements CRUD {
 	 * Metodo que muestra todos los profesores del fichero
 	 */
 	public void mostrar() {
-		File fichero = new File(FICHERO);
-		ObjectInputStream in = null;
-		boolean hayProf = false;
-		if (fichero.exists()) {
-			try {
-				in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)));
-				while (true) {
-					Profesor profe = (Profesor) in.readObject();
-					System.out.println("****PROFESOR****");
-					System.out.println("Dni: " + profe.getDni());
-					System.out.println("Nombre: " + profe.getNombre());
-					System.out.println("Direccion: " + profe.getDireccion());
-					System.out.println("Telefono: " + profe.getTelefono());
-					hayProf = true;
-				}
-			} catch (EOFException e) {
+		fich.mostrarSer();
 
-				e.printStackTrace();
-			} catch (IOException e) {
-				System.out.println("Error al mostrar Profesores");
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-
-				e.printStackTrace();
-				System.out.println("Error al mostrar Profesores");
-			} finally {
-				if(!hayProf) {
-					System.out.println("No hay profesores guardados");
-				}
-				try {
-					in.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		} else {
-			System.out.println("El fichero no Existe");
-		}
-
-	}
-
-	/**
-	 * Metodo para leer fichero serializado
-	 * 
-	 * @return Coleccion con los objetos Profesor
-	 */
-
-	public ArrayList<Profesor> leerFich() {
-		File fichero = new File(FICHERO);
-		ObjectInputStream in = null;
-		ArrayList<Profesor> profesores = new ArrayList<>();
-
-		try {
-			if (fichero.exists()) {// Comprobamos si existe
-				in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)));
-				while (true) {
-					profesores.add((Profesor) in.readObject());
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (in != null) {
-					in.close();
-				}
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return profesores;
-	}
-
-	/**
-	 * Metodo para guardar fichero serializado.
-	 * 
-	 * @param profe
-	 */
-	public void guardarFich(Profesor profe) {
-		File fichero = new File(FICHERO);
-		FileOutputStream fileOut = null;
-		BufferedOutputStream bufOut = null;
-		ObjectOutputStream out = null;
-		ArrayList<Profesor> listProfe = leerFich();
-		boolean existe = false;
-		try {
-			fileOut = new FileOutputStream(fichero);
-			bufOut = new BufferedOutputStream(fileOut);
-			out = new ObjectOutputStream(bufOut);
-			for (Profesor p : listProfe) {
-				out.writeObject(p);
-				if (p.getDni().equalsIgnoreCase(profe.getDni())) {
-					existe = true;
-				}
-			}
-
-			if (!existe) {
-				out.writeObject(profe);
-			} else {
-				System.err.println("Ese profesor ya existe. No puede haber dos Profesores con el mismo dni.");
-			}
-		} catch (IOException ex) {
-//	            ex.printStackTrace();
-		} finally {
-			try {
-				out.close();
-				bufOut.close();
-				fileOut.close();
-			} catch (Exception ex) {
-				// ex.printStackTrace();
-			}
-		}
 	}
 }
