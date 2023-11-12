@@ -1,8 +1,8 @@
 package org.example;
 
-import java.io.*;
+
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 /**
  * Clase que representa un curso en el sistema de gestion del centro de formacion.
@@ -13,7 +13,7 @@ public class Curso {
     private String descripcion;
     private String profe;
     private ArrayList<String> alumnos;
-    private static final String FICHERO = "Cursos.txt";
+
 
     /**
      * Constructor que crea un nuevo objeto Curso con el nombre y la descripcion proporcionados.
@@ -51,8 +51,9 @@ public class Curso {
      * @return El nuevo identificador del curso.
      */
     public int nuevoIdentificador() {
+        Fichero fich  = new Fichero();
         int aux = 0;
-        ArrayList<Curso> cursos = leerFich();
+        ArrayList<Curso> cursos = fich.leerText();
         if (!cursos.isEmpty()) {
             for (Curso c : cursos) {
                 if (c.getCodCur() > aux) {
@@ -67,39 +68,7 @@ public class Curso {
 
     }
 
-    /**
-     * Metodo que lee la informacion de los cursos desde un fichero.
-     *
-     * @return Una lista de cursos.
-     */
-    public ArrayList<Curso> leerFich() {
-        File file = new File(FICHERO);
-        ArrayList<Curso> cursos = new ArrayList<>();
-        String cod, nom, des;
-        String prof;
-        ArrayList<String> alumnos = new ArrayList<>();
 
-        if (file.exists()) {
-            try (BufferedReader br = new BufferedReader(new FileReader(FICHERO))) {
-                while ((cod = br.readLine()) != null) {
-                    cod = cod.split(":")[1].trim();
-                    int id = Integer.parseInt(cod);
-                    nom = br.readLine().split(":")[1].trim();
-                    des = br.readLine().split(":")[1].trim();
-                    prof = br.readLine().split(":")[1].trim();
-                    alumnos.addAll(Arrays.asList(br.readLine().split(":")[1].trim().split(","))); //Recogemos cada nombre de alumno con un split sobre la linea leida y los metemos en un arraylist
-
-                    Curso c = new Curso(id, nom, des, prof, alumnos);
-                    cursos.add(c);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        return cursos;
-    }
 
     /**
      * Metodo que agrega un alumno al curso.

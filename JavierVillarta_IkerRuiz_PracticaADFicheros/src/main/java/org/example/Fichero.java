@@ -9,7 +9,7 @@ public class Fichero {
     private static final String RUTA_PROFESORES = "Profesores.ser";
     private static final String RUTA_ALUMNOS = "Alumno.data";
 
-    //***************************FICHERO SERIALIZADO***************************
+    //***************************FICHERO SERIALIZADO PROFESORES***************************
 
     /**
      * Metodo para guardar fichero serializado.
@@ -53,7 +53,6 @@ public class Fichero {
 
 
     }
-
     public void guardarSer(ArrayList<Profesor> profes) {
         try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(RUTA_PROFESORES)))) {
 
@@ -65,13 +64,11 @@ public class Fichero {
             e.printStackTrace();
         }
     }
-
     /**
      * Metodo para leer fichero serializado
      *
      * @return Coleccion con los objetos Profesor
      */
-
     public ArrayList<Profesor> leerSer() {
         File fichero = new File(RUTA_PROFESORES);
         ObjectInputStream in = null;
@@ -100,7 +97,6 @@ public class Fichero {
         return profesores;
 
     }
-
     public void mostrarSer() {
         File fichero = new File(RUTA_PROFESORES);
         boolean hayProf = false;
@@ -126,7 +122,6 @@ public class Fichero {
             System.out.println("El fichero no Existe");
         }
     }
-
     public void mostrarUnoSer(String dni) {
         boolean existe = false;
         try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(RUTA_PROFESORES)))) {
@@ -151,7 +146,6 @@ public class Fichero {
             }
         }
     }
-
     public void borrarUnoSer(String dni) {
         ArrayList<Profesor> profes = leerSer();
         try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(RUTA_PROFESORES)))) {
@@ -188,7 +182,7 @@ public class Fichero {
     }
 
 
-    //*****************************FICHERO BINARIO*****************************
+    //*****************************FICHERO BINARIO ALUMNOS*****************************
 
     /**
      * Metodo para guardar los atributos de un objeto alumno en un fichero binario
@@ -223,7 +217,6 @@ public class Fichero {
         }
 
     }
-
     public void guardarBin(ArrayList<Alumno> alumnos) {
         File file = new File(RUTA_ALUMNOS);
         try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
@@ -280,7 +273,6 @@ public class Fichero {
         return alumnos;
 
     }
-
     public void mostrarBin() {
         File file = new File(RUTA_ALUMNOS);
 
@@ -291,11 +283,15 @@ public class Fichero {
                     System.out.println("****ALUMNO****");
 
                     System.out.println("Id Alumno: " + in.readInt());
-                    System.out.println("Nombre: " + in.readUTF());
-                    System.out.println("Apellido: " + in.readUTF());
+                    String nom = in.readUTF();
+                    System.out.println("Nombre: " + nom);
+                    String ape = in.readUTF();
+
+                    System.out.println("Apellido: " + ape);
                     System.out.println("Telefono: " + in.readUTF());
                     System.out.println("Direccion: " + in.readUTF());
                     System.out.println("Fecha: " + in.readUTF());
+                    System.out.println("Cursos: "+aluCurso(nom+" "+ape));
 
                 }
 
@@ -305,7 +301,6 @@ public class Fichero {
         } else
             System.out.println("No hay Alumnos guardados");
     }
-
     public void mostrarUnoBin(String alu) {
         File file = new File(RUTA_ALUMNOS);
         boolean exist = false;
@@ -368,7 +363,7 @@ public class Fichero {
     }
 
 
-    //******************************FICHERO TEXTO******************************
+    //******************************FICHERO TEXTO CURSOS******************************
     public void guardarText(Curso curso) {
         ArrayList<Curso> cursos = leerText();
         boolean repe = false;
@@ -420,7 +415,6 @@ public class Fichero {
         }
 
     }
-
     public ArrayList<Curso> leerText() {
         File file = new File(RUTA_CURSOS);
         ArrayList<Curso> listCursos = new ArrayList<>();
@@ -495,6 +489,40 @@ public class Fichero {
             System.out.println("Curso no encontrado");
         }
 
+    }
+
+    /**
+     * Metodo que guarda en una array y los devuelve los cursos en los que esta matriculado un alumno
+     * @param alumno una cadena formada por su nombre y apellido
+     * @return nombres del Curso a los que esta matriculado un alumno
+     */
+    private ArrayList<String> aluCurso(String alumno){
+        ArrayList<Curso> cursos = leerText();
+        ArrayList<String> nomCursos = new ArrayList<>();
+
+        for(Curso c: cursos){
+            for(String s: c.getAlumnos()){
+                if(alumno.equalsIgnoreCase(s)){
+                    nomCursos.add(c.getNombre());
+
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Metodo que guarda en una array y los devuelve los cursos en los que participa un profesor
+     * @param profe una cadena formada con su nombre y dni
+     * @return nombres del Curso a los que esta matriculado un profesor
+     */
+    private ArrayList<String> profeCurso(String profe){ //OJO HAY QUE MODIFICAR EL METODO DE GESiNSCRIPCIONES PARA QUE ESTO FUNCIONES NOMBRE + DNI
+        ArrayList<Curso> cursos = leerText();
+        ArrayList<String> nomCursos = new ArrayList<>();
+        for(Curso c: cursos){
+            if(profe.equalsIgnoreCase(c.getProfe()));
+        }
+        return null;
     }
 
 
