@@ -24,7 +24,7 @@ public class GestionAlumnos implements CRUD {
     public void menu() {
         System.out.println("-- GESTION ALUMNOS --");
 
-        String op ;
+        String op;
 
         do {
             System.out.println("\n Selecciona una opcion: \n 1.Alta Alumnos \n 2.Borrar Alumnos "
@@ -223,7 +223,7 @@ public class GestionAlumnos implements CRUD {
             System.out.println("El alumno no existe");
         } else {
             alumnos.remove(eliminado);
-           fich.guardarBin(alumnos);
+            fich.guardarBin(alumnos);
         }
     }
 
@@ -347,7 +347,7 @@ public class GestionAlumnos implements CRUD {
             if (!existe) {
                 System.out.println("El alumno no existe");
             } else {
-               fich.guardarBin(alumnos);
+                fich.guardarBin(alumnos);
             }
         }
     }
@@ -357,32 +357,12 @@ public class GestionAlumnos implements CRUD {
         String nom = sc.nextLine();
         System.out.println("Introduce los apellidos del alumno");
         String ape = sc.nextLine();
-        boolean existe = false;
-
-        ArrayList<Alumno> alumnos = fich.leerBin();
-
-        for (Alumno alumno : alumnos) {
-            if (alumno.getNombre().equalsIgnoreCase(nom) && alumno.getApellidos().equalsIgnoreCase(ape)) {
-                System.out.println(alumno.toString());
-                existe = true;
-            }
-        }
-
-        if (!existe) {
-            System.out.println("El alumno no existe");
-        }
+        String nomApe = nom.trim() + ape.trim();
+        fich.mostrarUnoBin(nomApe);
     }
 
     public void mostrar() {
-        ArrayList<Alumno> alumnos = fich.leerBin();
-
-        if(!alumnos.isEmpty()) {
-            for (Alumno a : alumnos) {
-                System.out.println(a.toString());
-            }
-        }else {
-            System.out.println("No hay alumnos guardados.");
-        }
+        fich.mostrarBin();
     }
 
 

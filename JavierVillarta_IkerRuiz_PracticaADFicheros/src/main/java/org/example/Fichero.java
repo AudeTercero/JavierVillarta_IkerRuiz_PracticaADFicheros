@@ -54,8 +54,8 @@ public class Fichero {
 
     }
 
-    public void guardarSer(ArrayList<Profesor> profes){
-        try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(RUTA_PROFESORES)))){
+    public void guardarSer(ArrayList<Profesor> profes) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(RUTA_PROFESORES)))) {
 
             for (Profesor p : profes) {
                 out.writeObject(p);
@@ -85,7 +85,7 @@ public class Fichero {
                 }
             }
         } catch (Exception e) {
-           // e.printStackTrace();
+            // e.printStackTrace();
         } finally {
             try {
                 if (in != null) {
@@ -93,18 +93,19 @@ public class Fichero {
                 }
 
             } catch (IOException e) {
-               // e.printStackTrace();
+                // e.printStackTrace();
             }
         }
 
         return profesores;
 
     }
-    public void mostrarSer(){
+
+    public void mostrarSer() {
         File fichero = new File(RUTA_PROFESORES);
         boolean hayProf = false;
         if (fichero.exists()) {
-            try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)))){
+            try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)))) {
 
                 while (true) {
                     Profesor profe = (Profesor) in.readObject();
@@ -126,9 +127,9 @@ public class Fichero {
         }
     }
 
-    public void mostrarUnoSer(String dni){
+    public void mostrarUnoSer(String dni) {
         boolean existe = false;
-        try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(RUTA_PROFESORES)))){
+        try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(RUTA_PROFESORES)))) {
 
             while (true) {
                 Profesor profe = (Profesor) in.readObject();
@@ -138,20 +139,22 @@ public class Fichero {
                     System.out.println("Nombre: " + profe.getNombre());
                     System.out.println("Direccion: " + profe.getDireccion());
                     System.out.println("Telefono: " + profe.getTelefono());
+
                     existe = true;
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
-           // e.printStackTrace();
+            // e.printStackTrace();
         } finally {
             if (!existe) {
                 System.out.println("Profesor no encontrado");
             }
         }
     }
-    public void borrarUnoSer(String dni){
+
+    public void borrarUnoSer(String dni) {
         ArrayList<Profesor> profes = leerSer();
-        try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(RUTA_PROFESORES)))){
+        try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(RUTA_PROFESORES)))) {
 
             for (Profesor p : profes) {
                 if (!dni.equalsIgnoreCase(p.getDni())) {
@@ -161,7 +164,7 @@ public class Fichero {
             }
 
         } catch (Exception e) {
-          // e.printStackTrace();
+            // e.printStackTrace();
         }
         System.out.println("Profesor eliminado correctamente");
 
@@ -172,11 +175,12 @@ public class Fichero {
 
     /**
      * Metodo para guardar los atributos de un objeto alumno en un fichero binario
+     *
      * @param alumno lo recibe para guardarlo en un fichero binario
      */
     public void guardarBin(Alumno alumno) {
         File file = new File(RUTA_ALUMNOS);
-        ArrayList<Alumno> alumnos = leerBin() ;
+        ArrayList<Alumno> alumnos = leerBin();
         boolean repe = false;
         for (Alumno a : alumnos) {
             if ((a.getNombre().equalsIgnoreCase(alumno.getNombre()) && (a.getApellidos().equalsIgnoreCase(alumno.getApellidos())))) {
@@ -185,7 +189,7 @@ public class Fichero {
         }
         if (!repe) {
 
-            try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file, true)))){
+            try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file, true)))) {
 
                 out.writeInt(alumno.getNumExpediente());
                 out.writeUTF(alumno.getNombre());
@@ -202,9 +206,10 @@ public class Fichero {
         }
 
     }
-    public void guardarBin(ArrayList<Alumno> alumnos){
+
+    public void guardarBin(ArrayList<Alumno> alumnos) {
         File file = new File(RUTA_ALUMNOS);
-        try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))){
+        try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
 
             for (Alumno alumno : alumnos) {
                 out.writeInt(alumno.getNumExpediente());
@@ -230,7 +235,7 @@ public class Fichero {
         File file = new File(RUTA_ALUMNOS);
 
         if (file.exists()) {
-            try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))){
+            try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
 
                 while (true) {
                     id = in.readInt();
@@ -256,6 +261,70 @@ public class Fichero {
             }
         }
         return alumnos;
+
+    }
+
+    public void mostrarBin() {
+        File file = new File(RUTA_ALUMNOS);
+
+        if (file.exists()) {
+            try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+
+                while (true) {
+                    System.out.println("****ALUMNO****");
+
+                    System.out.println("Id Alumno: " + in.readInt());
+                    System.out.println("Nombre: " + in.readUTF());
+                    System.out.println("Apellido: " + in.readUTF());
+                    System.out.println("Telefono: " + in.readUTF());
+                    System.out.println("Direccion: " + in.readUTF());
+                    System.out.println("Fecha: " + in.readUTF());
+
+                }
+
+            } catch (IOException e) {
+                //e.printStackTrace();
+            }
+        } else
+            System.out.println("No hay Alumnos guardados");
+    }
+
+    public void mostrarUnoBin(String alu) {
+        File file = new File(RUTA_ALUMNOS);
+        boolean exist = false;
+        String nom, ape, tel, dire, fech, aux;
+        if (file.exists()) {
+            try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+
+                while (true) {
+                    int id = in.readInt();
+                    nom = in.readUTF();
+                    ape = in.readUTF();
+                    tel = in.readUTF();
+                    dire = in.readUTF();
+                    fech = in.readUTF();
+                    aux = nom + ape;
+                    if (aux.equalsIgnoreCase(alu)) {
+                        System.out.println("****ALUMNO****");
+                        System.out.println("Id Alumno: " + id);
+                        System.out.println("Nombre: " + nom);
+                        System.out.println("Apellido: " + ape);
+                        System.out.println("Telefono: " + tel);
+                        System.out.println("Direccion: " + dire);
+                        System.out.println("Fecha: " + fech);
+                        exist = true;
+                    }
+
+                }
+
+            } catch (IOException e) {
+                //e.printStackTrace();
+            }
+            if(!exist){
+                System.out.println("Alumno no encontrado");
+            }
+        } else
+            System.out.println("No hay Alumnos guardados");
 
     }
 

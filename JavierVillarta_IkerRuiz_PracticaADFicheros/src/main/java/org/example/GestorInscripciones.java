@@ -361,57 +361,5 @@ public class GestorInscripciones {
         return listCursos;
     }
 
-    public ArrayList<Profesor> leerFichProf() {
-        File fichero = new File(RUTA_PROFESORES);
-        ArrayList<Profesor> profesores = new ArrayList<>();
-        try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)))) {
-            if (fichero.exists()) {// Comprobamos si existe
-
-                while (true) {
-                    profesores.add((Profesor) in.readObject());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return profesores;
-    }
-
-    public ArrayList<Alumno> leerFichAlu() {
-
-        ArrayList<Alumno> alumnos = new ArrayList<>();
-        int id = 0;
-        String nom, ape, tel, dir, fech;
-        File file = new File(RUTA_ALUMNOS);
-
-        if (file.exists()) {
-            try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-
-                while (true) {
-                    id = in.readInt();
-                    if (id != -1) {
-                        nom = in.readUTF();
-                        ape = in.readUTF();
-                        tel = in.readUTF();
-                        dir = in.readUTF();
-                        fech = in.readUTF();
-
-                        Alumno a = new Alumno(id, nom, ape, tel, dir, fech);
-
-                        alumnos.add(a);
-                    } else {
-                        break;
-                    }
-
-                }
-
-            } catch (IOException e) {
-                //e.printStackTrace();
-            }
-        }
-        return alumnos;
-
-    }
 
 }
