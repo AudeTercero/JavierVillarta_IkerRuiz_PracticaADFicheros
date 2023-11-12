@@ -1,9 +1,16 @@
 package org.example;
 
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
+/**
+ * Clase que proporciona metodos para realizar verificaciones en cadenas de texto y conversiones de tipo.
+ */
 public class Verificaciones {
+	/**
+	 * Verifica que la cadena tenga exactamente 9 caracteres.
+	 *
+	 * @param cadena La cadena a verificar.
+	 * @throws MisExceptions Si la cadena no tiene 9 caracteres.
+	 */
 	public void nueveCaracteres(String cadena) throws MisExceptions {// Este metodo pretende verificar si la cadena que
 																		// recibe tiene
 		// exactamente 9 caracteres.
@@ -14,8 +21,11 @@ public class Verificaciones {
 
 	}
 
-	/*
-	 * Metodo que verifica si un string solo contiene numeros
+	/**
+	 * Verifica si un string contiene solo numeros.
+	 *
+	 * @param string El string a verificar.
+	 * @throws MisExceptions Si el string no contiene solo numeros.
 	 */
 	public void esNum(String string) throws MisExceptions {
 
@@ -29,8 +39,11 @@ public class Verificaciones {
 		}
 	}
 
-	/*
-	 * Metodo que comprueba que un string tiene formato Date y solo contiene numeros
+	/**
+	 * Verifica que un string tiene formato de fecha (yyyy-MM-dd) y solo contiene numeros.
+	 *
+	 * @param string El string a verificar.
+	 * @throws MisExceptions Si el string no tiene formato de fecha valido.
 	 */
 	public void esFech(String string) throws MisExceptions {
 		string.trim(); // Eliminamos espacios de los laterales
@@ -63,29 +76,15 @@ public class Verificaciones {
 
 	}
 
-	public float cadeNumF(String num) {// paso de String a float
-		float numero;
-
-		numero = Float.parseFloat(num);// metodo de java que pasa String a Float
-		return numero;
-
-	}
-
+	/**
+	 * Verifica si la cadena contiene algun caracter.
+	 *
+	 * @param cadena La cadena a verificar.
+	 * @throws MisExceptions Si la cadena esta vacia.
+	 */
 	public void hayAlgo(String cadena) throws MisExceptions {// verifica si ha escrito algo
 		if (cadena.length() == 0) {
 			throw new MisExceptions("No ha escrito nada, por favor rellene el campo");
 		}
-
 	}
-
-	public void esFloat(String num) throws MisExceptions {// esto captura un fallo para saber si se puede pasar de
-															// String a float.
-		try {
-			Float.parseFloat(num);
-
-		} catch (NumberFormatException e) {
-			throw new MisExceptions("Lo que has introducido no es un numero decimal");
-		}
-	}
-
 }
