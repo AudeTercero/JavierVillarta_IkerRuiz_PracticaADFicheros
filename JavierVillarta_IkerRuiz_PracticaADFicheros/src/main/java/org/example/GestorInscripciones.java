@@ -10,7 +10,8 @@ public class GestorInscripciones {
     private static final String RUTA_CURSOS = "Cursos.txt";
     private static final String RUTA_PROFESORES = "Profesores.ser";
     private static final String RUTA_ALUMNOS = "Alumno.data";
-    public void menu(){
+
+    public void menu() {
         System.out.println("-- GESTION INSCRIPCIONES --");
 
         String op = null;
@@ -42,26 +43,88 @@ public class GestorInscripciones {
 
         } while (!op.equalsIgnoreCase("0"));
     }
-    public void inscribirAlumno(){
+
+    public void inscribirAlumno() {
         System.out.println("Escriba el nombre del alumno");
-        String nom  = sc.nextLine();
+        String nom = sc.nextLine();
         System.out.println("Escriba el apellido del alumno");
-        String ape  = sc.nextLine();
-        String nomApe = nom.trim()+ape.trim();
-        if(existAlu(nomApe)){
+        String ape = sc.nextLine();
+        String nomApe = nom.trim() + ape.trim();
+        if (existAlu(nomApe)) {
             System.out.println("Escriba el nombre del curso");
-            String cur  = sc.nextLine();
+            String cur = sc.nextLine();
             Curso curso = null;
-            ArrayList<Curso>cursos = leerFichCurs();
-            for(Curso c: cursos){
-                if(cur.equalsIgnoreCase(c.getNombre())){
+            ArrayList<Curso> cursos = leerFichCurs();
+            for (Curso c : cursos) {
+                if (cur.equalsIgnoreCase(c.getNombre())) {
                     curso = c;
+
+                    System.out.println("Seguro que quieres inscribir a " + nom + " al curso de " + c.getNombre() + "? \n [S/N]");
+                    String op = sc.nextLine();
+
+                    if (op.equalsIgnoreCase("S")) {
+                        cursos.remove(curso);
+                        curso.addAlumno(nom, ape);
+                        cursos.add(curso);
+                        System.out.println("Alumno inscrito con exito!");
+
+                    } else {
+                        System.out.println("Saliendo...");
+                    }
                 }
             }
-            cursos.remove(curso);
-            curso.addAlumno(nom,ape);
 
-            cursos.add(curso);
+            try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS)))) {
+                for (Curso c : cursos) {
+
+                    pw.write("CodigoCurso: " + c.getCodCur());
+                    pw.write("\n");
+                    pw.write("Nombre: " + c.getNombre());
+                    pw.write("\n");
+                    pw.write("Descripcion: " + c.getDescripcion());
+                    pw.write("\n");
+                    pw.write("Profesor: " + c.getProfe());
+                    pw.write("\n");
+                    pw.write("Alumnos: " + c.getAlumnos());
+                    pw.write("\n");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No hay ningun alumno con ese nombre y apellido");
+        }
+    }
+
+    public void inscribirProfesor() {
+        System.out.println("Escriba el DNI del profesor");
+        String dni = sc.nextLine();
+
+        if (existProfe(dni) != null) {
+            String nom = existProfe(dni);
+            System.out.println("Escriba el nombre del curso");
+            String cur = sc.nextLine();
+            Curso curso = null;
+            ArrayList<Curso> cursos = leerFichCurs();
+            for (Curso c : cursos) {
+                if (cur.equalsIgnoreCase(c.getNombre())) {
+                    curso = c;
+                    System.out.println("Seguro que quieres vincular a " + nom + " al curso de " + c.getNombre() + " como profesor? \n [S/N]");
+                    String op = sc.nextLine();
+
+                    if (op.equalsIgnoreCase("S")) {
+                        cursos.remove(curso);
+                        curso.setProfe(nom);
+                        cursos.add(curso);
+                        System.out.println("Profesor inscrito con exito!");
+
+                    } else {
+                        System.out.println("Saliendo...");
+                    }
+                }
+            }
+
 
             try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS)))) {
                 for (Curso c : cursos) {
@@ -82,65 +145,163 @@ public class GestorInscripciones {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
+            System.out.println("No hay ningun profesor con ese DNI");
+        }
+
+    }
+
+    public void bajaAlumno() {
+        System.out.println("Introduce el nombre del alumno que deseas borrar");
+        String nom = sc.nextLine();
+        System.out.println("Introduce los apellidos del alumno que deseas borrar");
+        String ape = sc.nextLine();
+
+        String nomAlu = nom.trim() + ape.trim();
+
+        if (existAlu(nomAlu)) {
+            System.out.println("Escriba el nombre del curso");
+            String cur = sc.nextLine();
+            Curso curso = null;
+            ArrayList<Curso> cursos = leerFichCurs();
+            for (Curso c : cursos) {
+                if (cur.equalsIgnoreCase(c.getNombre())) {
+                    curso = c;
+                    System.out.println("Seguro que quieres eliminar a " + nom + " del curso de " + c.getNombre() + "? \n [S/N]");
+                    String op = sc.nextLine();
+
+                    if (op.equalsIgnoreCase("S")) {
+                        cursos.remove(curso);
+                        if(curso.removeAlu(nom, ape)){
+                            cursos.add(curso);
+                            System.out.println("Alumno borrado con exito!");
+                        }
+
+                    } else {
+                        System.out.println("Saliendo...");
+                    }
+                }
+            }
+
+            try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS)))) {
+                for (Curso c : cursos) {
+
+                    pw.write("CodigoCurso: " + c.getCodCur());
+                    pw.write("\n");
+                    pw.write("Nombre: " + c.getNombre());
+                    pw.write("\n");
+                    pw.write("Descripcion: " + c.getDescripcion());
+                    pw.write("\n");
+                    pw.write("Profesor: " + c.getProfe());
+                    pw.write("\n");
+                    pw.write("Alumnos: " + c.getAlumnos());
+                    pw.write("\n");
+
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else {
             System.out.println("No hay ningun alumno con ese nombre y apellido");
         }
     }
-    public void inscribirProfesor(){
-        System.out.println("Escriba el dni del profesor");
-        String dni  = sc.nextLine();
-        String nom = existProfe(dni);
-        if(nom!=null){
-            //aqui codigo para ingresar profesor en fichero curso
+
+    public void bajaProfesor() {
+        System.out.println("Escriba el DNI del profesor");
+        String dni = sc.nextLine();
+
+        if (existProfe(dni) != null) {
+            String nom = existProfe(dni);
+            System.out.println("Escriba el nombre del curso");
+            String cur = sc.nextLine();
+            Curso curso = null;
+            ArrayList<Curso> cursos = leerFichCurs();
+            for (Curso c : cursos) {
+                if (cur.equalsIgnoreCase(c.getNombre())) {
+                    curso = c;
+                    System.out.println("Seguro que quieres desvincular a " + nom + " del curso de " + c.getNombre() + " como profesor? \n [S/N]");
+                    String op = sc.nextLine();
+
+                    if (op.equalsIgnoreCase("S")) {
+                        cursos.remove(curso);
+                        curso.setProfe("");
+                        cursos.add(curso);
+                        System.out.println("Profesor desvinculado con exito!");
+
+                    } else {
+                        System.out.println("Saliendo...");
+                    }
+                }
+            }
+
+            try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS)))) {
+                for (Curso c : cursos) {
+
+                    pw.write("CodigoCurso: " + c.getCodCur());
+                    pw.write("\n");
+                    pw.write("Nombre: " + c.getNombre());
+                    pw.write("\n");
+                    pw.write("Descripcion: " + c.getDescripcion());
+                    pw.write("\n");
+                    pw.write("Profesor: " + c.getProfe());
+                    pw.write("\n");
+                    pw.write("Alumnos: " + c.getAlumnos());
+                    pw.write("\n");
+
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No hay ningun profesor con ese DNI");
         }
 
     }
-    public void bajaAlumno(){
 
-
-    }
-    public void bajaProfesor(){
-
-    }
-    public boolean existAlu(String nomApe){
+    public boolean existAlu(String nomApe) {
         File file = new File(RUTA_ALUMNOS);
         String nom, ape;
 
-        try(DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))){
-            while(true){
+        try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+            while (true) {
                 in.readInt();
                 nom = in.readUTF();
                 ape = in.readUTF();
                 in.readUTF();
                 in.readUTF();
                 in.readUTF();
-                if((nom.trim()+ape.trim()).equalsIgnoreCase(nomApe.trim())){
+                if ((nom.trim() + ape.trim()).equalsIgnoreCase(nomApe.trim())) {
                     return true;
                 }
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         return false;
     }
-    public String existProfe(String dni){
-        File fichero = new File(RUTA_PROFESORES);
-        Profesor profe = null;
 
-        try(ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)));){
-            while(true){
+    public String existProfe(String dni) {
+        File fichero = new File(RUTA_PROFESORES);
+        Profesor profe;
+
+        try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)));) {
+            while (true) {
                 profe = (Profesor) in.readObject();
-                if(profe.getDni().equalsIgnoreCase(dni.trim())){
+                if (profe.getDni().equalsIgnoreCase(dni.trim())) {
                     return profe.getNombre();
                 }
 
             }
-        }catch (IOException | ClassNotFoundException e){
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
     }
+
     public ArrayList<Curso> leerFichCurs() {
         File file = new File(RUTA_CURSOS);
         ArrayList<Curso> listCursos = new ArrayList<>();
@@ -166,10 +327,11 @@ public class GestorInscripciones {
         }
         return listCursos;
     }
+
     public ArrayList<Profesor> leerFichProf() {
         File fichero = new File(RUTA_PROFESORES);
         ArrayList<Profesor> profesores = new ArrayList<>();
-        try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)))){
+        try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)))) {
             if (fichero.exists()) {// Comprobamos si existe
 
                 while (true) {
@@ -182,6 +344,7 @@ public class GestorInscripciones {
 
         return profesores;
     }
+
     public ArrayList<Alumno> leerFichAlu() {
 
         ArrayList<Alumno> alumnos = new ArrayList<>();
@@ -190,7 +353,7 @@ public class GestorInscripciones {
         File file = new File(RUTA_ALUMNOS);
 
         if (file.exists()) {
-            try(DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+            try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
 
                 while (true) {
                     id = in.readInt();

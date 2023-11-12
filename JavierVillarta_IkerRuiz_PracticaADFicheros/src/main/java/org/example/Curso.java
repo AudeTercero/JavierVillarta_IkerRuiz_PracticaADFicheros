@@ -11,7 +11,7 @@ public class Curso {
     private String nombre;
     private String descripcion;
     private String profe;
-    private ArrayList <String> alumnos;
+    private ArrayList<String> alumnos;
     private static final String FICHERO = "Cursos.txt";
 
     /**
@@ -25,7 +25,7 @@ public class Curso {
 
     }
 
-    public Curso(int id, String nombre, String descripcion, String profe, ArrayList <String> alumnos) {
+    public Curso(int id, String nombre, String descripcion, String profe, ArrayList<String> alumnos) {
         this.codCur = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -55,7 +55,7 @@ public class Curso {
         ArrayList<Curso> cursos = new ArrayList<>();
         String cod, nom, des;
         String prof;
-        ArrayList <String> alumnos = new ArrayList<>();
+        ArrayList<String> alumnos = new ArrayList<>();
 
         if (file.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(FICHERO))) {
@@ -78,8 +78,24 @@ public class Curso {
 
         return cursos;
     }
-    public void addAlumno (String nom, String Ape){
 
+    public void addAlumno(String nom, String ape) {
+        String nomAlu = nom.trim() + " " + ape.trim();
+        this.alumnos.add(nomAlu);
+
+    }
+
+    public boolean removeAlu(String nom, String ape) {
+        String nomAlu =  nom.trim() + " " + ape.trim();
+        boolean borrado = false;
+
+        for (String nombre : this.alumnos) {
+            if (nombre.equalsIgnoreCase(nomAlu)) {
+                this.alumnos.remove(nomAlu);
+                borrado = true;
+            }
+        }
+        return borrado;
     }
 
     public int getCodCur() {
@@ -122,20 +138,21 @@ public class Curso {
 
         this.alumnos = alumnos;
     }
-    public String alumnoCadena(){
+
+    public String alumnoCadena() {
         String lisAlu = "";
-        for(String s : alumnos){
-            if(lisAlu.length()==0)
+        for (String s : alumnos) {
+            if (lisAlu.length() == 0)
                 lisAlu = s;
             else
-                lisAlu = lisAlu +", "+s;
+                lisAlu = lisAlu + ", " + s;
         }
         return lisAlu;
     }
 
     @Override
     public String toString() {
-        return "Curso [codCur=" + codCur + ", nombre=" + nombre + ", descripcion=" + descripcion + ", Profesor="+", Alumnos=" + alumnoCadena()
+        return "Curso [codCur=" + codCur + ", nombre=" + nombre + ", descripcion=" + descripcion + ", Profesor=" + ", Alumnos=" + alumnoCadena()
                 + "]";
     }
 
