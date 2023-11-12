@@ -177,7 +177,9 @@ public class GestionProfesores implements CRUD {
 									System.out.println("Seguro que quiere eliminar el profesor con el dni: " + dni+". \n [S/N]");
 									opc = sc.nextLine();
 									if (opc.equalsIgnoreCase("S")) {
+
 										fich.borrarUnoSer(dni);
+
 									} else if (opc.equalsIgnoreCase("N")) {
 										System.out.println("Porfesor no eliminado");
 

@@ -53,6 +53,7 @@ public class Fichero {
 
 
     }
+
     public void guardarSer(ArrayList<Profesor> profes) {
         try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(RUTA_PROFESORES)))) {
 
@@ -64,6 +65,7 @@ public class Fichero {
             e.printStackTrace();
         }
     }
+
     /**
      * Metodo para leer fichero serializado
      *
@@ -97,6 +99,7 @@ public class Fichero {
         return profesores;
 
     }
+
     public void mostrarSer() {
         File fichero = new File(RUTA_PROFESORES);
         boolean hayProf = false;
@@ -122,6 +125,7 @@ public class Fichero {
             System.out.println("El fichero no Existe");
         }
     }
+
     public void mostrarUnoSer(String dni) {
         boolean existe = false;
         try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(RUTA_PROFESORES)))) {
@@ -146,14 +150,18 @@ public class Fichero {
             }
         }
     }
+
     public void borrarUnoSer(String dni) {
         ArrayList<Profesor> profes = leerSer();
+
         try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(RUTA_PROFESORES)))) {
 
             for (Profesor p : profes) {
                 if (!dni.equalsIgnoreCase(p.getDni())) {
                     out.writeObject(p);
 
+                }else{
+                   borrProfCurso(p.getNombre()+" "+dni);
                 }
             }
 
@@ -163,6 +171,7 @@ public class Fichero {
         System.out.println("Profesor eliminado correctamente");
 
     }
+
     public String existProfe(String dni) {
         File fichero = new File(RUTA_PROFESORES);
         Profesor profe;
@@ -217,6 +226,7 @@ public class Fichero {
         }
 
     }
+
     public void guardarBin(ArrayList<Alumno> alumnos) {
         File file = new File(RUTA_ALUMNOS);
         try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
@@ -273,6 +283,7 @@ public class Fichero {
         return alumnos;
 
     }
+
     public void mostrarBin() {
         File file = new File(RUTA_ALUMNOS);
 
@@ -291,7 +302,7 @@ public class Fichero {
                     System.out.println("Telefono: " + in.readUTF());
                     System.out.println("Direccion: " + in.readUTF());
                     System.out.println("Fecha: " + in.readUTF());
-                    System.out.println("Cursos: "+aluCurso(nom+" "+ape));
+                    System.out.println("Cursos: " + aluCurso(nom + " " + ape));
 
                 }
 
@@ -301,6 +312,7 @@ public class Fichero {
         } else
             System.out.println("No hay Alumnos guardados");
     }
+
     public void mostrarUnoBin(String alu) {
         File file = new File(RUTA_ALUMNOS);
         boolean exist = false;
@@ -332,13 +344,14 @@ public class Fichero {
             } catch (IOException e) {
                 //e.printStackTrace();
             }
-            if(!exist){
+            if (!exist) {
                 System.out.println("Alumno no encontrado");
             }
         } else
             System.out.println("No hay Alumnos guardados");
 
     }
+
     public boolean existAlu(String nomApe) {
         File file = new File(RUTA_ALUMNOS);
         String nom, ape;
@@ -356,7 +369,7 @@ public class Fichero {
                 }
             }
         } catch (IOException e) {
-           // e.printStackTrace();
+            // e.printStackTrace();
         }
 
         return false;
@@ -367,13 +380,13 @@ public class Fichero {
     public void guardarText(Curso curso) {
         ArrayList<Curso> cursos = leerText();
         boolean repe = false;
-        for(Curso a: cursos){
-            if(curso.getNombre().equalsIgnoreCase(a.getNombre())){
+        for (Curso a : cursos) {
+            if (curso.getNombre().equalsIgnoreCase(a.getNombre())) {
                 repe = true;
             }
 
         }
-        if(!repe) {
+        if (!repe) {
             try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS, true)))) {
                 pw.write("CodigoCurso: " + curso.getCodCur());
                 pw.write("\n");
@@ -389,14 +402,15 @@ public class Fichero {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             System.out.println("Ese Curso ya existe");
         }
 
     }
-    public void guardarText(ArrayList<Curso> cursos){
+
+    public void guardarText(ArrayList<Curso> cursos) {
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS, true)))) {
-            for(Curso curso: cursos){
+            for (Curso curso : cursos) {
                 pw.write("CodigoCurso: " + curso.getCodCur());
                 pw.write("\n");
                 pw.write("Nombre: " + curso.getNombre());
@@ -415,6 +429,7 @@ public class Fichero {
         }
 
     }
+
     public ArrayList<Curso> leerText() {
         File file = new File(RUTA_CURSOS);
         ArrayList<Curso> listCursos = new ArrayList<>();
@@ -441,10 +456,11 @@ public class Fichero {
         return listCursos;
 
     }
-    public void mostrarText(){
+
+    public void mostrarText() {
         File file = new File(RUTA_CURSOS);
         String cod;
-        if(file.exists()) {
+        if (file.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                 while ((cod = br.readLine()) != null) {
                     System.out.println("****CURSO*****");
@@ -458,11 +474,12 @@ public class Fichero {
                 e.printStackTrace();
 
             }
-        }else{
+        } else {
             System.out.println("Aun no hay Cursos guardados");
         }
     }
-    public void mostrarUnoText(String nombreCurso){
+
+    public void mostrarUnoText(String nombreCurso) {
         String cod, nom, des, prof, alu;
         boolean encontrado = false;
         try (BufferedReader br = new BufferedReader(new FileReader(RUTA_CURSOS))) {
@@ -491,18 +508,49 @@ public class Fichero {
 
     }
 
+    public void borrAluCurso(String nomApe) {
+        ArrayList<Curso> cursos = leerText();
+        ArrayList<String> nomCursos = new ArrayList<>();
+        for (Curso c : cursos) {
+            for (String s : c.getAlumnos()) {
+                if (nomApe.equalsIgnoreCase(s)) {
+                    c.removeAlu(s.split(" ")[0], s.split(" ")[1]);
+
+                }
+            }
+        }
+        guardarText(cursos);
+
+    }
+
+    public void borrProfCurso(String nomDni) {
+        ArrayList<Curso> cursos = leerText();
+        ArrayList<String> nomCursos = new ArrayList<>();
+        for (Curso c : cursos) {
+
+            if (nomDni.equalsIgnoreCase(c.getProfe())) {
+                c.setProfe("");
+
+            }
+
+        }
+        guardarText(cursos);
+
+    }
+
     /**
      * Metodo que guarda en una array y los devuelve los cursos en los que esta matriculado un alumno
+     *
      * @param alumno una cadena formada por su nombre y apellido
      * @return nombres del Curso a los que esta matriculado un alumno
      */
-    private ArrayList<String> aluCurso(String alumno){
+    private ArrayList<String> aluCurso(String alumno) {
         ArrayList<Curso> cursos = leerText();
         ArrayList<String> nomCursos = new ArrayList<>();
 
-        for(Curso c: cursos){
-            for(String s: c.getAlumnos()){
-                if(alumno.equalsIgnoreCase(s)){
+        for (Curso c : cursos) {
+            for (String s : c.getAlumnos()) {
+                if (alumno.equalsIgnoreCase(s)) {
                     nomCursos.add(c.getNombre());
 
                 }
@@ -513,14 +561,15 @@ public class Fichero {
 
     /**
      * Metodo que guarda en una array y los devuelve los cursos en los que participa un profesor
+     *
      * @param profe una cadena formada con su nombre y dni
      * @return nombres del Curso a los que esta matriculado un profesor
      */
-    private ArrayList<String> profeCurso(String profe){ //OJO HAY QUE MODIFICAR EL METODO DE GESiNSCRIPCIONES PARA QUE ESTO FUNCIONES NOMBRE + DNI
+    private ArrayList<String> profeCurso(String profe) { //OJO HAY QUE MODIFICAR EL METODO DE GESiNSCRIPCIONES PARA QUE ESTO FUNCIONES NOMBRE + DNI
         ArrayList<Curso> cursos = leerText();
         ArrayList<String> nomCursos = new ArrayList<>();
-        for(Curso c: cursos){
-            if(profe.equalsIgnoreCase(c.getProfe()));
+        for (Curso c : cursos) {
+            if (profe.equalsIgnoreCase(c.getProfe())) ;
         }
         return null;
     }
