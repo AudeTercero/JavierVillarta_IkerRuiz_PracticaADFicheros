@@ -119,10 +119,10 @@ public class Fichero {
 
                 }
             } catch (EOFException e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Error al mostrar Profesores");
-                e.printStackTrace();
+
+               // e.printStackTrace();
             }
         } else {
             System.out.println("El fichero no Existe");
@@ -406,7 +406,7 @@ public class Fichero {
                 pw.write("\n");
                 System.out.println("Curso guardado correctamente");
             } catch (IOException e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             }
         } else {
             System.out.println("Ese Curso ya existe");
@@ -438,7 +438,7 @@ public class Fichero {
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
     }
@@ -463,7 +463,7 @@ public class Fichero {
                     listCursos.add(curso);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
         return listCursos;
