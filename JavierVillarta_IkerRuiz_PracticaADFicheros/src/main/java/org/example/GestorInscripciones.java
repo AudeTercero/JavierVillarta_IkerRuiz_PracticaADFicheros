@@ -54,14 +54,15 @@ public class GestorInscripciones {
             String cur = sc.nextLine();
             Curso curso = null;
             ArrayList<Curso> cursos = fich.leerText();
-            for (Curso c : cursos) {
-                if (cur.equalsIgnoreCase(c.getNombre())) {
-                    curso = c;
+            if (!cursos.isEmpty()) {
+                for (Curso c : cursos) {
+                    if (cur.equalsIgnoreCase(c.getNombre())) {
+                        curso = c;
+                    }
                 }
-
-                if(curso != null){
+                if (curso != null) {
                     do {
-                        System.out.println("Seguro que quieres inscribir a " + nom + " al curso de " + c.getNombre() + "? \n [S/N]");
+                        System.out.println("Seguro que quieres inscribir a " + nom + " al curso de " + curso.getNombre() + "? \n [S/N]");
                         op = sc.nextLine();
 
                         if (op.equalsIgnoreCase("S")) {
@@ -77,12 +78,13 @@ public class GestorInscripciones {
                         }
                     } while (!op.equalsIgnoreCase("s") && !op.equalsIgnoreCase("n"));
                 }
+                fich.guardarText(cursos);
+            } else {
+                System.out.println("No hay ningun alumno con ese nombre y apellido");
             }
-
-            fich.guardarText(cursos);
-        } else {
-            System.out.println("No hay ningun alumno con ese nombre y apellido");
         }
+
+
     }
 
     public void inscribirProfesor() {
@@ -96,19 +98,21 @@ public class GestorInscripciones {
             String cur = sc.nextLine();
             Curso curso = null;
             ArrayList<Curso> cursos = fich.leerText();
-            for (Curso c : cursos) {
-                if (cur.equalsIgnoreCase(c.getNombre())) {
-                    curso = c;
+            if (!cursos.isEmpty()) {
+                for (Curso c : cursos) {
+                    if (cur.equalsIgnoreCase(c.getNombre())) {
+                        curso = c;
+                    }
                 }
 
-                if(curso != null){
+                if (curso != null) {
                     do {
-                        System.out.println("Seguro que quieres vincular a " + nom + " al curso de " + c.getNombre() + " como profesor? \n [S/N]");
+                        System.out.println("Seguro que quieres vincular a " + nom + " al curso de " + curso.getNombre() + " como profesor? \n [S/N]");
                         op = sc.nextLine();
 
                         if (op.equalsIgnoreCase("S")) {
                             cursos.remove(curso);
-                            curso.setProfe(nom+" "+dni);
+                            curso.setProfe(nom + " " + dni);
                             cursos.add(curso);
                             System.out.println("Profesor inscrito con exito!");
 
@@ -118,13 +122,14 @@ public class GestorInscripciones {
                             System.out.println("Eleccion no valida, prueba de nuevo.");
                         }
                     } while (!op.equalsIgnoreCase("s") && !op.equalsIgnoreCase("n"));
+
                 }
+
+
+                fich.guardarText(cursos);
+            } else {
+                System.out.println("No hay ningun profesor con ese DNI");
             }
-
-
-           fich.guardarText(cursos);
-        } else {
-            System.out.println("No hay ningun profesor con ese DNI");
         }
 
     }
@@ -148,7 +153,7 @@ public class GestorInscripciones {
                     curso = c;
                 }
 
-                if(curso != null){
+                if (curso != null) {
                     do {
                         System.out.println("Seguro que quieres eliminar a " + nom + " del curso de " + c.getNombre() + "? \n [S/N]");
                         op = sc.nextLine();
@@ -171,7 +176,7 @@ public class GestorInscripciones {
             }
 
 
-           fich.guardarText(cursos);
+            fich.guardarText(cursos);
 
         } else {
             System.out.println("No hay ningun alumno con ese nombre y apellido");
@@ -214,18 +219,12 @@ public class GestorInscripciones {
 
             }
 
-           fich.guardarText(cursos);
+            fich.guardarText(cursos);
         } else {
             System.out.println("No hay ningun profesor con ese DNI");
         }
 
     }
-
-
-
-
-
-
 
 
 }

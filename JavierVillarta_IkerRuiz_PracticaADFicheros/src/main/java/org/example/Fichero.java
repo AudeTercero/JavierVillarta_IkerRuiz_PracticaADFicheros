@@ -115,7 +115,7 @@ public class Fichero {
                     System.out.println("Nombre: " + nom);
                     System.out.println("Direccion: " + profe.getDireccion());
                     System.out.println("Telefono: " + profe.getTelefono());
-                    System.out.println("Cursos: "+profeCurso(nom+" "+dni));
+                    System.out.println("Cursos: " + profeCurso(nom + " " + dni));
 
                 }
             } catch (EOFException e) {
@@ -142,7 +142,7 @@ public class Fichero {
                     System.out.println("Nombre: " + nom);
                     System.out.println("Direccion: " + profe.getDireccion());
                     System.out.println("Telefono: " + profe.getTelefono());
-                    System.out.println("Cursos: "+profeCurso(nom+" "+dni));
+                    System.out.println("Cursos: " + profeCurso(nom + " " + dni));
 
                     existe = true;
                 }
@@ -341,6 +341,7 @@ public class Fichero {
                         System.out.println("Telefono: " + tel);
                         System.out.println("Direccion: " + dire);
                         System.out.println("Fecha: " + fech);
+                        System.out.println("Cursos: " + aluCurso(nom + " " + ape));
                         exist = true;
                     }
 
@@ -414,7 +415,7 @@ public class Fichero {
     }
 
     public void guardarText(ArrayList<Curso> cursos) {
-        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS, true)))) {
+        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS)))) {
             for (Curso curso : cursos) {
                 pw.write("CodigoCurso: " + curso.getCodCur());
                 pw.write("\n");
@@ -422,9 +423,16 @@ public class Fichero {
                 pw.write("\n");
                 pw.write("Descripcion: " + curso.getDescripcion());
                 pw.write("\n");
-                pw.write("Profesor: ");
+                pw.write("Profesor: " + curso.getProfe());
                 pw.write("\n");
                 pw.write("Alumnos: ");
+                for (int i = 0; i < curso.getAlumnos().size(); i++) {
+                    pw.write(curso.getAlumnos().get(i));
+                    if (i < (curso.getAlumnos().size()) - 1) {
+                        pw.write(", ");
+                    }
+
+                }
                 pw.write("\n");
             }
 
@@ -515,6 +523,7 @@ public class Fichero {
 
     /**
      * Elimina los el alumno de los cursos en los que aperezca
+     *
      * @param nomApe recibe el nombre y el apellido
      */
     public void borrAluCurso(String nomApe) {
@@ -537,6 +546,7 @@ public class Fichero {
 
     /**
      * Elimina los el porfesor de los cursos en los que aperezca
+     *
      * @param nomDni recibe el nombre y el dni
      */
     public void borrProfCurso(String nomDni) {
@@ -560,12 +570,13 @@ public class Fichero {
 
     /**
      * Itera los cursos que hay y si existe uno con el mismo nombre lanza una excepcion
+     *
      * @param nomCurso
      * @throws MisExceptions
      */
-    public void cursRepe(String nomCurso)throws MisExceptions{
+    public void cursRepe(String nomCurso) throws MisExceptions {
         File file = new File(RUTA_CURSOS);
-        if(file.exists()) {
+        if (file.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                 while ((br.readLine()) != null) {
 
@@ -573,12 +584,12 @@ public class Fichero {
                     br.readLine();
                     br.readLine();
                     br.readLine();
-                    if(nom.equalsIgnoreCase(nomCurso.trim())){
+                    if (nom.equalsIgnoreCase(nomCurso.trim())) {
                         throw new MisExceptions("Ese curso ya existe, solo puede haber un curso con el mismo nombre");
                     }
                 }
-            }catch(IOException e){
-               // e.printStackTrace();
+            } catch (IOException e) {
+                // e.printStackTrace();
             }
         }
     }
@@ -595,7 +606,7 @@ public class Fichero {
         if (!cursos.isEmpty()) {
             for (Curso c : cursos) {
                 for (String s : c.getAlumnos()) {
-                    if (alumno.equalsIgnoreCase(s)) {
+                    if (alumno.equalsIgnoreCase(s.trim())) {
                         nomCursos.add(c.getNombre());
 
                     }
@@ -618,8 +629,8 @@ public class Fichero {
         ArrayList<String> nomCursos = new ArrayList<>();
         if (!cursos.isEmpty()) {
             for (Curso c : cursos) {
-                if (profe.equalsIgnoreCase(c.getProfe())){
-                    nomCursos.add(profe);
+                if (profe.equalsIgnoreCase(c.getProfe())) {
+                    nomCursos.add(c.getNombre());
                 }
             }
 
@@ -627,7 +638,6 @@ public class Fichero {
 
         return nomCursos;
     }
-
 
 
 }

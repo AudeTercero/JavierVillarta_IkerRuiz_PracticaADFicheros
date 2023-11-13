@@ -25,6 +25,7 @@ public class Curso {
         this.codCur = nuevoIdentificador();
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.alumnos = new ArrayList<>();
 
     }
 
@@ -51,7 +52,7 @@ public class Curso {
      * @return El nuevo identificador del curso.
      */
     public int nuevoIdentificador() {
-        Fichero fich  = new Fichero();
+        Fichero fich = new Fichero();
         int aux = 0;
         ArrayList<Curso> cursos = fich.leerText();
         if (!cursos.isEmpty()) {
@@ -69,7 +70,6 @@ public class Curso {
     }
 
 
-
     /**
      * Metodo que agrega un alumno al curso.
      *
@@ -78,6 +78,7 @@ public class Curso {
      */
     public void addAlumno(String nom, String ape) {
         String nomAlu = nom.trim() + " " + ape.trim();
+
         this.alumnos.add(nomAlu);
 
     }
