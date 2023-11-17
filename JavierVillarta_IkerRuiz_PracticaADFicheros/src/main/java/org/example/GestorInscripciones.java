@@ -49,7 +49,8 @@ public class GestorInscripciones {
         System.out.println("Escriba el apellido del alumno");
         String ape = sc.nextLine();
         String nomApe = nom.trim() + ape.trim();
-        if (fich.existAlu(nomApe)) {
+        int idAlu = fich.existAlu(nomApe);
+        if (idAlu!=-1) {
             System.out.println("Escriba el nombre del curso");
             String cur = sc.nextLine();
             Curso curso = null;
@@ -67,7 +68,7 @@ public class GestorInscripciones {
 
                         if (op.equalsIgnoreCase("S")) {
                             cursos.remove(curso);
-                            curso.addAlumno(nom, ape);
+                            curso.addAlumno(idAlu);
                             cursos.add(curso);
                             System.out.println("Alumno inscrito con exito!");
 
@@ -142,8 +143,8 @@ public class GestorInscripciones {
         String ape = sc.nextLine();
 
         String nomAlu = nom.trim() + ape.trim();
-
-        if (fich.existAlu(nomAlu)) {
+        int idAlu = fich.existAlu(nomAlu);
+        if (idAlu!=-1) {
             System.out.println("Escriba el nombre del curso");
             String cur = sc.nextLine();
             Curso curso = null;
@@ -160,7 +161,7 @@ public class GestorInscripciones {
 
                         if (op.equalsIgnoreCase("S")) {
                             cursos.remove(curso);
-                            if (curso.removeAlu(nom, ape)) {
+                            if (curso.removeAlu(idAlu)) {
                                 cursos.add(curso);
                                 System.out.println("Alumno borrado con exito!");
                             }

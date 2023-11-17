@@ -25,7 +25,7 @@ public class Curso {
         this.codCur = nuevoIdentificador();
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.alumnos = new ArrayList<>();
+
 
     }
 
@@ -73,30 +73,30 @@ public class Curso {
     /**
      * Metodo que agrega un alumno al curso.
      *
-     * @param nom El nombre del alumno a agregar.
-     * @param ape El apellido del alumno a agregar.
+     * @param idAlu El nombre del alumno a agregar.
+     *
      */
-    public void addAlumno(String nom, String ape) {
-        String nomAlu = nom.trim() + " " + ape.trim();
+    public void addAlumno(int idAlu) {
+        String aluId = ""+idAlu;
 
-        this.alumnos.add(nomAlu);
+        this.alumnos.add(aluId.trim());
+        System.out.println(alumnos);
 
     }
 
     /**
      * Metodo que elimina un alumno del curso.
      *
-     * @param nom El nombre del alumno a eliminar.
-     * @param ape El apellido del alumno a eliminar.
+     * @param idAlu El id del alumno a eliminar.
      * @return true si el alumno fue eliminado, false si no se encontro.
      */
-    public boolean removeAlu(String nom, String ape) {
-        String nomAlu = nom.trim() + " " + ape.trim();
+    public boolean removeAlu(int idAlu) {
+        String idAluS = ""+idAlu;
         boolean borrado = false;
 
         for (String nombre : this.alumnos) {
-            if (nombre.equalsIgnoreCase(nomAlu)) {
-                this.alumnos.remove(nomAlu);
+            if (nombre.equalsIgnoreCase(idAluS)) {
+                this.alumnos.remove(idAluS);
                 borrado = true;
             }
         }

@@ -358,27 +358,52 @@ public class Fichero {
 
     }
 
-    public boolean existAlu(String nomApe) {
+    public int existAlu(String nomApe) {
         File file = new File(RUTA_ALUMNOS);
         String nom, ape;
+        int idAlu;
 
         try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
             while (true) {
-                in.readInt();
+                idAlu = in.readInt();
                 nom = in.readUTF();
                 ape = in.readUTF();
                 in.readUTF();
                 in.readUTF();
                 in.readUTF();
                 if ((nom.trim() + ape.trim()).equalsIgnoreCase(nomApe.trim())) {
-                    return true;
+                    return idAlu;
                 }
             }
         } catch (IOException e) {
             // e.printStackTrace();
         }
 
-        return false;
+        return -1;
+    }
+
+    public Alumno buscarId(int idAlu){
+        File file = new File(RUTA_ALUMNOS);
+        String nom, ape, tel, dire, fech;
+        int idAux;
+        try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+            while (true) {
+                idAux = in.readInt();
+                nom = in.readUTF();
+                ape = in.readUTF();
+                tel = in.readUTF();
+                dire = in.readUTF();
+                fech = in.readUTF();
+                if (idAlu == idAux ) {
+                    return new Alumno(idAux,nom,ape,tel,dire,fech);
+
+                }
+            }
+
+        } catch (IOException e) {
+            // e.printStackTrace();
+        }
+        return null;
     }
 
 
@@ -415,6 +440,7 @@ public class Fichero {
     }
 
     public void guardarText(ArrayList<Curso> cursos) {
+
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS)))) {
             for (Curso curso : cursos) {
                 pw.write("CodigoCurso: " + curso.getCodCur());
@@ -427,7 +453,7 @@ public class Fichero {
                 pw.write("\n");
                 pw.write("Alumnos: ");
                 for (int i = 0; i < curso.getAlumnos().size(); i++) {
-                    pw.write(curso.getAlumnos().get(i));
+                    pw.write((curso.getAlumnos().get(i)).trim());
                     if (i < (curso.getAlumnos().size()) - 1) {
                         pw.write(", ");
                     }
@@ -448,10 +474,11 @@ public class Fichero {
         ArrayList<Curso> listCursos = new ArrayList<>();
         String cod, nom, des, prof;
         Curso curso;
-        ArrayList<String> auxAlu = new ArrayList<>();
+
         if (file.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                 while ((cod = br.readLine()) != null) {
+                    ArrayList<String> auxAlu = new ArrayList<>();
                     cod = cod.split(":")[1].trim();
                     nom = br.readLine().split(":")[1].trim();
                     des = br.readLine().split(":")[1].trim();
@@ -473,6 +500,7 @@ public class Fichero {
     public void mostrarText() {
         File file = new File(RUTA_CURSOS);
         String cod;
+        ArrayList<String>nomApe = new ArrayList<>();
         if (file.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                 while ((cod = br.readLine()) != null) {
@@ -481,7 +509,9 @@ public class Fichero {
                     System.out.println(br.readLine());
                     System.out.println(br.readLine());
                     System.out.println(br.readLine());
-                    System.out.println(br.readLine());
+
+                    nomApe = idAluANom(br.readLine());
+                    System.out.println(nomApe.toString());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -490,6 +520,17 @@ public class Fichero {
         } else {
             System.out.println("Aun no hay Cursos guardados");
         }
+    }
+    private ArrayList<String> idAluANom(String linea) {
+        ArrayList<String> idLinea = new ArrayList<>();
+        ArrayList<String>nomApe = new ArrayList<>();
+        idLinea.addAll(Arrays.asList(linea.split(":")[1].split(",")));
+        for(String id: idLinea){
+            Alumno alu = buscarId(Integer.parseInt(id.trim()));
+            nomApe.add(alu.getNombre()+" "+alu.getApellidos());
+        }
+
+        return nomApe;
     }
 
     public void mostrarUnoText(String nombreCurso) {
@@ -532,7 +573,7 @@ public class Fichero {
             for (Curso c : cursos) {
                 for (String s : c.getAlumnos()) {
                     if (nomApe.equalsIgnoreCase(s)) {
-                        c.removeAlu(s.split(" ")[0], s.split(" ")[1]);
+                        c.removeAlu(Integer.parseInt(s.trim()));
 
                     }
                 }
