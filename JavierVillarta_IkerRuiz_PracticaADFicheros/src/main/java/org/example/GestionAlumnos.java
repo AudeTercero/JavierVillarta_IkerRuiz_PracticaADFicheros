@@ -67,7 +67,7 @@ public class GestionAlumnos implements CRUD {
         do {
             fallo = false;
             System.out.println("Introduce el nombre del alumno:");
-            nom = sc.nextLine();
+            nom = sc.nextLine().trim();
             try {
                 verif.hayAlgo(nom);
 
@@ -84,7 +84,7 @@ public class GestionAlumnos implements CRUD {
             do {
                 fallo = false;
                 System.out.println("Introduce el apellido del alumno:");
-                ape = sc.nextLine();
+                ape = sc.nextLine().trim();
                 try {
                     verif.hayAlgo(ape);
 
@@ -119,7 +119,7 @@ public class GestionAlumnos implements CRUD {
                     do {
                         fallo = false;
                         System.out.println("Introduce la direccion del alumno:");
-                        dir = sc.nextLine();
+                        dir = sc.nextLine().trim();
                         try {
                             verif.hayAlgo(dir);
 

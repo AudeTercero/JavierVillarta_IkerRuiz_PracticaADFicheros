@@ -11,8 +11,8 @@ public class Verificaciones {
 	 * @param cadena La cadena a verificar.
 	 * @throws MisExceptions Si la cadena no tiene 9 caracteres.
 	 */
-	public void nueveCaracteres(String cadena) throws MisExceptions {// Este metodo pretende verificar si la cadena que
-																		// recibe tiene
+	public void nueveCaracteres(String cadena) throws MisExceptions {
+
 		// exactamente 9 caracteres.
 		cadena = cadena.trim();
 		if (cadena.length() != 9) {
