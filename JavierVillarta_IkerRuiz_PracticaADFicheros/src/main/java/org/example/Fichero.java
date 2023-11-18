@@ -116,7 +116,7 @@ public class Fichero {
                     System.out.println("Nombre: " + nom);
                     System.out.println("Direccion: " + profe.getDireccion());
                     System.out.println("Telefono: " + profe.getTelefono());
-                    System.out.println("Cursos: " + profeCurso(nom + " " + dni));
+                    System.out.println("Cursos: " + profeCurso(profe.getIdProfe()));
 
                 }
             } catch (EOFException e) {
@@ -138,13 +138,14 @@ public class Fichero {
                 Profesor profe = (Profesor) in.readObject();
                 if (dni.equalsIgnoreCase(profe.getDni())) {
                     System.out.println("****PROFESOR****");
+
                     System.out.println("Id: "+profe.getIdProfe());
                     System.out.println("Dni: " + profe.getDni());
                     String nom = profe.getNombre();
                     System.out.println("Nombre: " + nom);
                     System.out.println("Direccion: " + profe.getDireccion());
                     System.out.println("Telefono: " + profe.getTelefono());
-                    System.out.println("Cursos: " + profeCurso(nom + " " + dni));
+                    System.out.println("Cursos: " + profeCurso(profe.getIdProfe()));
 
                     existe = true;
                 }
@@ -193,6 +194,24 @@ public class Fichero {
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Profesor buscarIdProfe(int idProfe){
+        File fichero = new File(RUTA_PROFESORES);
+        try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)))){
+            if (fichero.exists()) {// Comprobamos si existe
+
+                while (true) {
+                    Profesor profe = (Profesor) in.readObject();
+                    if(idProfe == profe.getIdProfe()){
+                        return profe;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // e.printStackTrace();
         }
         return null;
     }
@@ -298,18 +317,17 @@ public class Fichero {
             try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
 
                 while (true) {
+                    int idAlu = in.readInt();
                     System.out.println("****ALUMNO****");
-
-                    System.out.println("Id Alumno: " + in.readInt());
+                    System.out.println("Id Alumno: " + idAlu);
                     String nom = in.readUTF();
                     System.out.println("Nombre: " + nom);
                     String ape = in.readUTF();
-
                     System.out.println("Apellido: " + ape);
                     System.out.println("Telefono: " + in.readUTF());
                     System.out.println("Direccion: " + in.readUTF());
                     System.out.println("Fecha: " + in.readUTF());
-                    System.out.println("Cursos: " + aluCurso(nom + " " + ape));
+                    System.out.println("Cursos: " + aluCurso(idAlu));
 
                 }
 
@@ -343,7 +361,7 @@ public class Fichero {
                         System.out.println("Telefono: " + tel);
                         System.out.println("Direccion: " + dire);
                         System.out.println("Fecha: " + fech);
-                        System.out.println("Cursos: " + aluCurso(nom + " " + ape));
+                        System.out.println("Cursos: " + aluCurso(id));
                         exist = true;
                     }
 
@@ -384,7 +402,7 @@ public class Fichero {
         return -1;
     }
 
-    public Alumno buscarId(int idAlu) {
+    private Alumno buscarId(int idAlu) {
         File file = new File(RUTA_ALUMNOS);
         String nom, ape, tel, dire, fech;
         int idAux;
@@ -515,8 +533,8 @@ public class Fichero {
                     System.out.println(cod);
                     System.out.println(br.readLine());
                     System.out.println(br.readLine());
-                    System.out.println(br.readLine());
-
+                    String idProfe = br.readLine();
+                    System.out.println("Profesor: "+idProfeNom(idProfe));
                     nomApe = idAluANom(br.readLine());
                     System.out.println("Alumnos: "+nomApe.toString());
                 }
@@ -543,6 +561,17 @@ public class Fichero {
 
         return nomApe;
     }
+    private String idProfeNom(String linea){
+        String nomApe = "";
+        if (!linea.split(":")[1].trim().isEmpty()){
+            int idProfe = Integer.parseInt(linea.split(":")[1].trim());
+            nomApe = buscarIdProfe(idProfe).getNombre();
+
+        }
+
+
+        return nomApe;
+    }
 
     public void mostrarUnoText(String nombreCurso) {
         String cod, nom, des, prof, alu;
@@ -558,7 +587,7 @@ public class Fichero {
                     System.out.println(cod);
                     System.out.println(nom);
                     System.out.println(des);
-                    System.out.println(prof);
+                    System.out.println(idProfeNom(prof));
                     System.out.println(alu);
                     encontrado = true;
                 }
@@ -649,19 +678,22 @@ public class Fichero {
     /**
      * Metodo que guarda en una array y los devuelve los cursos en los que esta matriculado un alumno
      *
-     * @param alumno una cadena formada por su nombre y apellido
+     * @param idAlu una cadena formada por su nombre y apellido
      * @return nombres del Curso a los que esta matriculado un alumno
      */
-    private ArrayList<String> aluCurso(String alumno) {
+    private ArrayList<String> aluCurso(int idAlu) {
         ArrayList<Curso> cursos = leerText();
         ArrayList<String> nomCursos = new ArrayList<>();
         if (!cursos.isEmpty()) {
             for (Curso c : cursos) {
                 for (String s : c.getAlumnos()) {
-                    if (alumno.equalsIgnoreCase(s.trim())) {
-                        nomCursos.add(c.getNombre());
+                    if(!s.trim().isEmpty()){
+                        if (idAlu == (Integer.parseInt(s.trim()))) {
+                            nomCursos.add(c.getNombre());
 
+                        }
                     }
+
                 }
             }
 
@@ -673,17 +705,20 @@ public class Fichero {
     /**
      * Metodo que guarda en una array y los devuelve los cursos en los que participa un profesor
      *
-     * @param profe una cadena formada con su nombre y dni
+     * @param idProfe una cadena formada con su nombre y dni
      * @return nombres del Curso a los que esta matriculado un profesor
      */
-    private ArrayList<String> profeCurso(String profe) { //OJO HAY QUE MODIFICAR EL METODO DE GESiNSCRIPCIONES PARA QUE ESTO FUNCIONES NOMBRE + DNI
+    private ArrayList<String> profeCurso(int idProfe) {
         ArrayList<Curso> cursos = leerText();
         ArrayList<String> nomCursos = new ArrayList<>();
         if (!cursos.isEmpty()) {
             for (Curso c : cursos) {
-                if (profe.equalsIgnoreCase(c.getProfe())) {
-                    nomCursos.add(c.getNombre());
+                if(!c.getProfe().trim().isEmpty()){
+                    if (idProfe == (Integer.parseInt(c.getProfe().trim()))) {
+                        nomCursos.add(c.getNombre());
+                    }
                 }
+
             }
 
         }
