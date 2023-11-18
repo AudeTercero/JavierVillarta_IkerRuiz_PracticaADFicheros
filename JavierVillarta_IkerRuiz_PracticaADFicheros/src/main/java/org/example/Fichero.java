@@ -56,6 +56,7 @@ public class Fichero {
 
     /**
      * Metodo para guardar una coleccion de profesores.
+     *
      * @param profes recibe una coleccion de profesores que ira guardando uno por uno en el fichero serializado.
      */
     public void guardarSer(ArrayList<Profesor> profes) {
@@ -116,7 +117,7 @@ public class Fichero {
                 while (true) {
                     Profesor profe = (Profesor) in.readObject();
                     System.out.println("****PROFESOR****");
-                    System.out.println("Id: "+profe.getIdProfe());
+                    System.out.println("Id: " + profe.getIdProfe());
                     String dni = profe.getDni();
                     System.out.println("Dni: " + dni);
                     String nom = profe.getNombre();
@@ -139,6 +140,7 @@ public class Fichero {
 
     /**
      * Metodo para mostrar un profesor
+     *
      * @param dni recibe un dni que sera el del profesor que mostremos.
      */
     public void mostrarUnoSer(String dni) {
@@ -150,7 +152,7 @@ public class Fichero {
                 if (dni.equalsIgnoreCase(profe.getDni())) {
                     System.out.println("****PROFESOR****");
 
-                    System.out.println("Id: "+profe.getIdProfe());
+                    System.out.println("Id: " + profe.getIdProfe());
                     System.out.println("Dni: " + profe.getDni());
                     String nom = profe.getNombre();
                     System.out.println("Nombre: " + nom);
@@ -172,6 +174,7 @@ public class Fichero {
 
     /**
      * Metodo para borrar un profesor del fichero
+     *
      * @param dni recibe un dni que sera el del profesor que borremos
      */
     public void borrarUnoSer(String dni) {
@@ -184,7 +187,7 @@ public class Fichero {
                     out.writeObject(p);
 
                 } else {
-                    borrProfCurso(p.getNombre() + " " + dni);
+                    borrProfCurso(p.getIdProfe());
                 }
             }
 
@@ -197,6 +200,7 @@ public class Fichero {
 
     /**
      * Metodo para comprobar si existe un profesor ademas devulve un profesor
+     *
      * @param dni recibe el dni del profesor a buscar
      * @return Profesor
      */
@@ -213,24 +217,25 @@ public class Fichero {
 
             }
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return null;
     }
 
     /**
      * Metodo para obtener un profesor por medio de la id
+     *
      * @param idProfe recibe la id del profesor para obtenerlo
      * @return Profesor
      */
-    private Profesor buscarIdProfe(int idProfe){
+    private Profesor buscarIdProfe(int idProfe) {
         File fichero = new File(RUTA_PROFESORES);
-        try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)))){
+        try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)))) {
             if (fichero.exists()) {// Comprobamos si existe
 
                 while (true) {
                     Profesor profe = (Profesor) in.readObject();
-                    if(idProfe == profe.getIdProfe()){
+                    if (idProfe == profe.getIdProfe()) {
                         return profe;
                     }
                 }
@@ -280,6 +285,7 @@ public class Fichero {
 
     /**
      * Metodo para guardar una coleccion de alumnos
+     *
      * @param alumnos recibe la coleccion de alumnos por parametro
      */
     public void guardarBin(ArrayList<Alumno> alumnos) {
@@ -372,6 +378,7 @@ public class Fichero {
 
     /**
      * Metodo para mostrar un alumno
+     *
      * @param alu recibe por parametro una cadena compuesta de nombre y apellido
      */
     public void mostrarUnoBin(String alu) {
@@ -416,12 +423,13 @@ public class Fichero {
 
     /**
      * Metodo para comprobar si existe un alumno y para obtenerlo
+     *
      * @param nomApe recibe una cadena compuesta por el nombre y apellido del alumno a buscar
      * @return Alumno
      */
     public Alumno existAlu(String nomApe) {
         File file = new File(RUTA_ALUMNOS);
-        String nom, ape, tel,dir, fecha;
+        String nom, ape, tel, dir, fecha;
         int idAlu;
 
         try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
@@ -433,7 +441,7 @@ public class Fichero {
                 dir = in.readUTF();
                 fecha = in.readUTF();
                 if ((nom.trim() + ape.trim()).equalsIgnoreCase(nomApe.trim())) {
-                    return new Alumno(idAlu,nom,ape,tel,dir, fecha);
+                    return new Alumno(idAlu, nom, ape, tel, dir, fecha);
                 }
             }
         } catch (IOException e) {
@@ -445,6 +453,7 @@ public class Fichero {
 
     /**
      * Metodo para obtener un alumno por medio de la id
+     *
      * @param idAlu recibe el alumno por parametro
      * @return
      */
@@ -477,6 +486,7 @@ public class Fichero {
 
     /**
      * Metodo para guardar un curso en el fichero de texto
+     *
      * @param curso recibe un Curso por parametro que es el que guardaremos
      */
     public void guardarText(Curso curso) {
@@ -512,6 +522,7 @@ public class Fichero {
 
     /**
      * Metodo para guardar una coleccion de cursos
+     *
      * @param cursos recibe una coleccion de cursos por parametro
      */
     public void guardarText(ArrayList<Curso> cursos) {
@@ -546,6 +557,7 @@ public class Fichero {
 
     /**
      * Metodo para leer todos los cursos y meterlos en una coleccion
+     *
      * @return ArrayList de cursos
      */
     public ArrayList<Curso> leerText() {
@@ -596,9 +608,9 @@ public class Fichero {
                     System.out.println(br.readLine());
                     System.out.println(br.readLine());
                     String idProfe = br.readLine();
-                    System.out.println("Profesor: "+idProfeNom(idProfe));
+                    System.out.println("Profesor: " + idProfeNom(idProfe));
                     nomApe = idAluANom(br.readLine());
-                    System.out.println("Alumnos: "+nomApe.toString());
+                    System.out.println("Alumnos: " + nomApe.toString());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -611,6 +623,7 @@ public class Fichero {
 
     /**
      * Metodo para Guardar los nombres y apellidos de los alumnos en una coleccion
+     *
      * @param linea recibe la linea del text con los alumnos
      * @return ArrayList de cadenas formadaas por los nombres y apellidos de los alumnos
      */
@@ -631,12 +644,13 @@ public class Fichero {
 
     /**
      * Metodo para obtener el nombre del profesor
+     *
      * @param linea recibe la linea del fichero del curso donde esta guardado el id del profesor
      * @return String con el nombre del profesor
      */
-    private String idProfeNom(String linea){
+    private String idProfeNom(String linea) {
         String nomApe = "";
-        if (!linea.split(":")[1].trim().isEmpty()){
+        if (!linea.split(":")[1].trim().isEmpty()) {
             int idProfe = Integer.parseInt(linea.split(":")[1].trim());
             nomApe = buscarIdProfe(idProfe).getNombre();
 
@@ -648,6 +662,7 @@ public class Fichero {
 
     /**
      * Metodo para mostrar un curso
+     *
      * @param nombreCurso recibe por parametro el nombre del curso
      */
     public void mostrarUnoText(String nombreCurso) {
@@ -682,14 +697,14 @@ public class Fichero {
     /**
      * Elimina los el alumno de los cursos en los que aperezca
      *
-     * @param nomApe recibe el nombre y el apellido
+     * @param idAlu recibe el nombre y el apellido
      */
-    public void borrAluCurso(String nomApe) {
+    public void borrAluCurso(int idAlu) {
         ArrayList<Curso> cursos = leerText();
         if (!cursos.isEmpty()) {
             for (Curso c : cursos) {
                 for (String s : c.getAlumnos()) {
-                    if (nomApe.equalsIgnoreCase(s)) {
+                    if (idAlu == (Integer.parseInt(s.trim()))) {
                         c.removeAlu(Integer.parseInt(s.trim()));
 
                     }
@@ -705,15 +720,15 @@ public class Fichero {
     /**
      * Elimina los el porfesor de los cursos en los que aperezca
      *
-     * @param nomDni recibe el nombre y el dni
+     * @param idProfe recibe el nombre y el dni
      */
-    public void borrProfCurso(String nomDni) {
+    private void borrProfCurso(int idProfe) {
         ArrayList<Curso> cursos = leerText();
-        ArrayList<String> nomCursos = new ArrayList<>();
+
         if (!cursos.isEmpty()) {
             for (Curso c : cursos) {
 
-                if (nomDni.equalsIgnoreCase(c.getProfe())) {
+                if (idProfe == (Integer.parseInt(c.getProfe()))) {
                     c.setProfe("");
 
                 }
@@ -764,7 +779,7 @@ public class Fichero {
         if (!cursos.isEmpty()) {
             for (Curso c : cursos) {
                 for (String s : c.getAlumnos()) {
-                    if(!s.trim().isEmpty()){
+                    if (!s.trim().isEmpty()) {
                         if (idAlu == (Integer.parseInt(s.trim()))) {
                             nomCursos.add(c.getNombre());
 
@@ -790,7 +805,7 @@ public class Fichero {
         ArrayList<String> nomCursos = new ArrayList<>();
         if (!cursos.isEmpty()) {
             for (Curso c : cursos) {
-                if(!c.getProfe().trim().isEmpty()){
+                if (!c.getProfe().trim().isEmpty()) {
                     if (idProfe == (Integer.parseInt(c.getProfe().trim()))) {
                         nomCursos.add(c.getNombre());
                     }
@@ -802,6 +817,17 @@ public class Fichero {
 
         return nomCursos;
     }
+
+    /**
+     * Metodo para borrar un alumno de todos los cursos
+     */
+    public void borrarAlumnoCursos() {
+
+    }
+
+    /**
+     * Metodo para borrar un profesor de todos los cursos
+     */
 
 
 }

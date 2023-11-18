@@ -217,8 +217,9 @@ public class GestionAlumnos implements ICRUD {
         if (!existe) {
             System.out.println("El alumno no existe");
         } else {
+            fich.borrAluCurso(eliminado.getNumExpediente());
             alumnos.remove(eliminado);
-            fich.borrAluCurso(eliminado.getNombre()+" "+eliminado.getApellidos());
+
             fich.guardarBin(alumnos);
         }
     }

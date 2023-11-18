@@ -93,10 +93,16 @@ public class Curso {
     public boolean removeAlu(int idAlu) {
         String idAluS = ""+idAlu;
         boolean borrado = false;
+        ArrayList<String> aux = new ArrayList<>();
+        for (String s : this.alumnos) {
+            if (s.trim().equalsIgnoreCase(idAluS)) {
+                aux.add(s);
 
-        for (String nombre : this.alumnos) {
-            if (nombre.equalsIgnoreCase(idAluS)) {
-                this.alumnos.remove(idAluS);
+            }
+        }
+        if(!aux.isEmpty()) {
+            for (String s : aux) {
+                this.alumnos.remove(s);
                 borrado = true;
             }
         }

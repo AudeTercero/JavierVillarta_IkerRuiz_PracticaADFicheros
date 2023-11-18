@@ -180,6 +180,7 @@ public class GestionProfesores implements ICRUD {
 
 										fich.borrarUnoSer(dni);
 
+
 									} else if (opc.equalsIgnoreCase("N")) {
 										System.out.println("Porfesor no eliminado");
 
