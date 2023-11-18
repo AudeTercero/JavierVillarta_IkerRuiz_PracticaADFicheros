@@ -55,7 +55,7 @@ public class GestionProfesores implements ICRUD {
 	/**
 	 * Realiza la operacion de dar de alta a un profesor.
 	 */
-	public void alta() {
+	 public void alta() {
 		Profesor profe;
 		String dni, nombre, direccion, telefono;
 		int contError = 0;

@@ -8,7 +8,9 @@ public class GestorInscripciones {
     private static Scanner sc = new Scanner(System.in);
     private Fichero fich = new Fichero();
 
-
+    /**
+     * Metodo de menu que llama a los otros metodos
+     */
     public void menu() {
         System.out.println("-- GESTION INSCRIPCIONES --");
 
@@ -42,7 +44,10 @@ public class GestorInscripciones {
         } while (!op.equalsIgnoreCase("0"));
     }
 
-    public void inscribirAlumno() {
+    /**
+     * Metodo para inscribir un alumno en un curso
+     */
+    private void inscribirAlumno() {
         String op;
         boolean puedeGuardar = false;
         boolean repe = false;
@@ -121,8 +126,10 @@ public class GestorInscripciones {
         }
     }
 
-
-    public void inscribirProfesor() {
+    /**
+     * Metodo para inscribir un profesor en un curso
+     */
+    private void inscribirProfesor() {
         String op;
         boolean puedeGuardar = false;
         boolean registrado = false;
@@ -215,7 +222,10 @@ public class GestorInscripciones {
         }
     }
 
-    public void bajaAlumno() {
+    /**
+     * Metodo para dar de baja profesor en un curso
+     */
+    private void bajaAlumno() {
         String op;
         System.out.println("Introduce el nombre del alumno que deseas borrar");
         String nom = sc.nextLine();
@@ -264,7 +274,10 @@ public class GestorInscripciones {
         }
     }
 
-    public void bajaProfesor() {
+    /**
+     * Metodo para dar de baja profesor en un curso
+     */
+    private void bajaProfesor() {
         String op;
         System.out.println("Escriba el DNI del profesor");
         String dni = sc.nextLine();
