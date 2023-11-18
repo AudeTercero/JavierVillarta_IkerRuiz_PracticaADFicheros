@@ -378,9 +378,9 @@ public class Fichero {
 
     }
 
-    public int existAlu(String nomApe) {
+    public Alumno existAlu(String nomApe) {
         File file = new File(RUTA_ALUMNOS);
-        String nom, ape;
+        String nom, ape, tel,dir, fecha;
         int idAlu;
 
         try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
@@ -388,18 +388,18 @@ public class Fichero {
                 idAlu = in.readInt();
                 nom = in.readUTF();
                 ape = in.readUTF();
-                in.readUTF();
-                in.readUTF();
-                in.readUTF();
+                tel = in.readUTF();
+                dir = in.readUTF();
+                fecha = in.readUTF();
                 if ((nom.trim() + ape.trim()).equalsIgnoreCase(nomApe.trim())) {
-                    return idAlu;
+                    return new Alumno(idAlu,nom,ape,tel,dir, fecha);
                 }
             }
         } catch (IOException e) {
             // e.printStackTrace();
         }
 
-        return -1;
+        return null;
     }
 
     private Alumno buscarId(int idAlu) {
