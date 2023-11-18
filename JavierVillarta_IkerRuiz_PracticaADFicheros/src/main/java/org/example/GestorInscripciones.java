@@ -53,6 +53,7 @@ public class GestorInscripciones {
         if (idAlu!=-1) {
             System.out.println("Escriba el nombre del curso");
             String cur = sc.nextLine();
+            //mirar si hay algo escrito y si existe el curso
             Curso curso = null;
             ArrayList<Curso> cursos = fich.leerText();
             if (!cursos.isEmpty()) {
@@ -92,9 +93,10 @@ public class GestorInscripciones {
         String op;
         System.out.println("Escriba el DNI del profesor");
         String dni = sc.nextLine();
+        Profesor profe = fich.existProfe(dni);
 
-        if (fich.existProfe(dni) != null) {
-            String nom = fich.existProfe(dni);
+        if (profe!=null) {
+
             System.out.println("Escriba el nombre del curso");
             String cur = sc.nextLine();
             Curso curso = null;
@@ -108,12 +110,12 @@ public class GestorInscripciones {
 
                 if (curso != null) {
                     do {
-                        System.out.println("Seguro que quieres vincular a " + nom + " al curso de " + curso.getNombre() + " como profesor? \n [S/N]");
+                        System.out.println("Seguro que quieres vincular a " + profe.getNombre() +" con DNI: "+profe.getDni() +" al curso de " + curso.getNombre() + " como profesor? \n [S/N]");
                         op = sc.nextLine();
 
                         if (op.equalsIgnoreCase("S")) {
                             cursos.remove(curso);
-                            curso.setProfe(nom + " " + dni);
+                            curso.setProfe(""+profe.getIdProfe());
                             cursos.add(curso);
                             System.out.println("Profesor inscrito con exito!");
 
@@ -124,6 +126,8 @@ public class GestorInscripciones {
                         }
                     } while (!op.equalsIgnoreCase("s") && !op.equalsIgnoreCase("n"));
 
+                }else {
+                    System.out.println("No hay ningun curso con ese nombre");
                 }
 
 
@@ -188,9 +192,9 @@ public class GestorInscripciones {
         String op;
         System.out.println("Escriba el DNI del profesor");
         String dni = sc.nextLine();
+        Profesor profe = fich.existProfe(dni);
+        if (profe != null) {
 
-        if (fich.existProfe(dni) != null) {
-            String nom = fich.existProfe(dni);
             System.out.println("Escriba el nombre del curso");
             String cur = sc.nextLine();
             Curso curso = null;
@@ -199,23 +203,31 @@ public class GestorInscripciones {
                 if (cur.equalsIgnoreCase(c.getNombre())) {
                     curso = c;
                 }
-                if (curso != null) {
-                    do {
-                        System.out.println("Seguro que quieres desvincular a " + nom + " del curso de " + c.getNombre() + " como profesor? \n [S/N]");
-                        op = sc.nextLine();
 
-                        if (op.equalsIgnoreCase("S")) {
-                            cursos.remove(curso);
-                            curso.setProfe("");
-                            cursos.add(curso);
-                            System.out.println("Profesor desvinculado con exito!");
+                if (curso != null ) {
+                    int profCursId = Integer.parseInt(curso.getProfe().trim());
+                    if(profCursId == profe.getIdProfe()) {
+                        do {
+                            System.out.println("Seguro que quieres desvincular a " + profe.getNombre() + " con DNI: " + profe.getDni() + " del curso de " + c.getNombre() + " como profesor? \n [S/N]");
+                            op = sc.nextLine();
 
-                        } else if (op.equalsIgnoreCase("n")) {
-                            System.out.println("Saliendo...");
-                        } else {
-                            System.out.println("Eleccion no valida, prueba de nuevo.");
-                        }
-                    } while (!op.equalsIgnoreCase("s") && !op.equalsIgnoreCase("n"));
+                            if (op.equalsIgnoreCase("S")) {
+                                cursos.remove(curso);
+                                curso.setProfe("");
+                                cursos.add(curso);
+                                System.out.println("Profesor desvinculado con exito!");
+
+                            } else if (op.equalsIgnoreCase("n")) {
+                                System.out.println("Saliendo...");
+                            } else {
+                                System.out.println("Eleccion no valida, prueba de nuevo.");
+                            }
+                        } while (!op.equalsIgnoreCase("s") && !op.equalsIgnoreCase("n"));
+                    }else {
+                        System.out.println("El profesor que quiere borrar no esta en ese curso");
+                    }
+                }else{
+                    System.out.println("Ese curso no existe");
                 }
 
             }

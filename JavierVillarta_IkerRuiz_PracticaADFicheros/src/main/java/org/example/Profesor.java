@@ -1,12 +1,14 @@
 package org.example;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Clase que representa a un profesor en el sistema de gestion del centro de formacion.
  * Implementa la interfaz Serializable para permitir la serializacion.
  */
 public class Profesor implements Serializable {
+	private int idProfe;
 	private String dni;
 	private String nombre;
 	private String direccion;
@@ -25,8 +27,39 @@ public class Profesor implements Serializable {
 		this.nombre = nombre;
 		this.direccion = direccion;
 		this.telefono = telefono;
+		this.idProfe = nuevoExpediente();
 
 	}
+
+	public Profesor(int idProfe, String dni, String nombre, String direccion, String telefono) {
+		this.idProfe = idProfe;
+		this.dni = dni;
+		this.nombre = nombre;
+		this.direccion = direccion;
+		this.telefono = telefono;
+	}
+	public int nuevoExpediente() {
+		Fichero fich = new Fichero();
+		int aux = 0;
+		ArrayList<Profesor> profesores = fich.leerSer();
+		if (!profesores.isEmpty()) {
+			for (Profesor p : profesores) {
+				if (p.getIdProfe() > aux) {
+					aux = p.getIdProfe();
+				}
+			}
+			aux++;
+		} else {
+			aux = 1;
+		}
+		return aux;
+	}
+
+	public int getIdProfe() {
+		return idProfe;
+	}
+
+
 
 	/**
 	 * Obtiene el numero de identificacion del profesor.
