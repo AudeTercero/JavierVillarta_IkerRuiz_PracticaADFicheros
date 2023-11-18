@@ -4,7 +4,7 @@ package org.example;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class GestionAlumnos implements CRUD {
+public class GestionAlumnos implements ICRUD {
 
 
     private Scanner sc = new Scanner(System.in);

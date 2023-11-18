@@ -54,6 +54,10 @@ public class Fichero {
 
     }
 
+    /**
+     * Metodo para guardar una coleccion de profesores.
+     * @param profes recibe una coleccion de profesores que ira guardando uno por uno en el fichero serializado.
+     */
     public void guardarSer(ArrayList<Profesor> profes) {
         try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(RUTA_PROFESORES)))) {
 
@@ -100,6 +104,9 @@ public class Fichero {
 
     }
 
+    /**
+     * Metodo para mostrar todos los profesores del fichero serializado
+     */
     public void mostrarSer() {
         File fichero = new File(RUTA_PROFESORES);
 
@@ -130,6 +137,10 @@ public class Fichero {
         }
     }
 
+    /**
+     * Metodo para mostrar un profesor
+     * @param dni recibe un dni que sera el del profesor que mostremos.
+     */
     public void mostrarUnoSer(String dni) {
         boolean existe = false;
         try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(RUTA_PROFESORES)))) {
@@ -159,6 +170,10 @@ public class Fichero {
         }
     }
 
+    /**
+     * Metodo para borrar un profesor del fichero
+     * @param dni recibe un dni que sera el del profesor que borremos
+     */
     public void borrarUnoSer(String dni) {
         ArrayList<Profesor> profes = leerSer();
 
@@ -180,6 +195,11 @@ public class Fichero {
 
     }
 
+    /**
+     * Metodo para comprobar si existe un profesor ademas devulve un profesor
+     * @param dni recibe el dni del profesor a buscar
+     * @return Profesor
+     */
     public Profesor existProfe(String dni) {
         File fichero = new File(RUTA_PROFESORES);
         Profesor profe;
@@ -198,6 +218,11 @@ public class Fichero {
         return null;
     }
 
+    /**
+     * Metodo para obtener un profesor por medio de la id
+     * @param idProfe recibe la id del profesor para obtenerlo
+     * @return Profesor
+     */
     private Profesor buscarIdProfe(int idProfe){
         File fichero = new File(RUTA_PROFESORES);
         try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)))){
@@ -253,6 +278,10 @@ public class Fichero {
 
     }
 
+    /**
+     * Metodo para guardar una coleccion de alumnos
+     * @param alumnos recibe la coleccion de alumnos por parametro
+     */
     public void guardarBin(ArrayList<Alumno> alumnos) {
         File file = new File(RUTA_ALUMNOS);
         try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
@@ -310,6 +339,9 @@ public class Fichero {
 
     }
 
+    /**
+     * Mostrar todos los alumnos del fichero binario
+     */
     public void mostrarBin() {
         File file = new File(RUTA_ALUMNOS);
 
@@ -338,6 +370,10 @@ public class Fichero {
             System.out.println("No hay Alumnos guardados");
     }
 
+    /**
+     * Metodo para mostrar un alumno
+     * @param alu recibe por parametro una cadena compuesta de nombre y apellido
+     */
     public void mostrarUnoBin(String alu) {
         File file = new File(RUTA_ALUMNOS);
         boolean exist = false;
@@ -378,6 +414,11 @@ public class Fichero {
 
     }
 
+    /**
+     * Metodo para comprobar si existe un alumno y para obtenerlo
+     * @param nomApe recibe una cadena compuesta por el nombre y apellido del alumno a buscar
+     * @return Alumno
+     */
     public Alumno existAlu(String nomApe) {
         File file = new File(RUTA_ALUMNOS);
         String nom, ape, tel,dir, fecha;
@@ -402,6 +443,11 @@ public class Fichero {
         return null;
     }
 
+    /**
+     * Metodo para obtener un alumno por medio de la id
+     * @param idAlu recibe el alumno por parametro
+     * @return
+     */
     private Alumno buscarId(int idAlu) {
         File file = new File(RUTA_ALUMNOS);
         String nom, ape, tel, dire, fech;
@@ -428,6 +474,11 @@ public class Fichero {
 
 
     //******************************FICHERO TEXTO CURSOS******************************
+
+    /**
+     * Metodo para guardar un curso en el fichero de texto
+     * @param curso recibe un Curso por parametro que es el que guardaremos
+     */
     public void guardarText(Curso curso) {
         ArrayList<Curso> cursos = leerText();
         boolean repe = false;
@@ -459,6 +510,10 @@ public class Fichero {
 
     }
 
+    /**
+     * Metodo para guardar una coleccion de cursos
+     * @param cursos recibe una coleccion de cursos por parametro
+     */
     public void guardarText(ArrayList<Curso> cursos) {
 
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_CURSOS)))) {
@@ -489,6 +544,10 @@ public class Fichero {
 
     }
 
+    /**
+     * Metodo para leer todos los cursos y meterlos en una coleccion
+     * @return ArrayList de cursos
+     */
     public ArrayList<Curso> leerText() {
         File file = new File(RUTA_CURSOS);
         ArrayList<Curso> listCursos = new ArrayList<>();
@@ -522,6 +581,9 @@ public class Fichero {
 
     }
 
+    /**
+     * Muestra todos los cursos que estan en el txt
+     */
     public void mostrarText() {
         File file = new File(RUTA_CURSOS);
         String cod;
@@ -547,6 +609,11 @@ public class Fichero {
         }
     }
 
+    /**
+     * Metodo para Guardar los nombres y apellidos de los alumnos en una coleccion
+     * @param linea recibe la linea del text con los alumnos
+     * @return ArrayList de cadenas formadaas por los nombres y apellidos de los alumnos
+     */
     private ArrayList<String> idAluANom(String linea) {
         ArrayList<String> idLinea = new ArrayList<>();
         ArrayList<String> nomApe = new ArrayList<>();
@@ -561,6 +628,12 @@ public class Fichero {
 
         return nomApe;
     }
+
+    /**
+     * Metodo para obtener el nombre del profesor
+     * @param linea recibe la linea del fichero del curso donde esta guardado el id del profesor
+     * @return String con el nombre del profesor
+     */
     private String idProfeNom(String linea){
         String nomApe = "";
         if (!linea.split(":")[1].trim().isEmpty()){
@@ -573,6 +646,10 @@ public class Fichero {
         return nomApe;
     }
 
+    /**
+     * Metodo para mostrar un curso
+     * @param nombreCurso recibe por parametro el nombre del curso
+     */
     public void mostrarUnoText(String nombreCurso) {
         String cod, nom, des, prof, alu;
         boolean encontrado = false;

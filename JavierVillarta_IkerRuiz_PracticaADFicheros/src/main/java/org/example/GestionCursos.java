@@ -8,7 +8,7 @@ import java.util.Scanner;
 /**
  * Clase que implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para gestionar cursos.
  */
-public class GestionCursos implements CRUD {
+public class GestionCursos implements ICRUD {
     private Fichero fich = new Fichero();
     private Scanner sc = new Scanner(System.in);
     private Verificaciones verif = new Verificaciones();

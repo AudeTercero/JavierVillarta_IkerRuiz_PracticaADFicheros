@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Clase que implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para gestionar profesores.
  */
-public class GestionProfesores implements CRUD {
+public class GestionProfesores implements ICRUD {
 
 	private static Scanner sc = new Scanner(System.in);
 	private static Verificaciones verif = new Verificaciones();

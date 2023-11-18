@@ -3,7 +3,11 @@ package org.example;
 /**
  * Interfaz que define operaciones basicas de CRUD (Crear, Leer, Actualizar, Eliminar).
  */
-public interface CRUD {
+public interface ICRUD {
+	/**
+	 * Metodo para el menu de las gestiones
+	 */
+	void menu();
 	/**
 	 * Metodo para agregar un nuevo elemento.
 	 */
