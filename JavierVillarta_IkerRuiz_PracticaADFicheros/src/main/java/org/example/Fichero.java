@@ -701,15 +701,21 @@ public class Fichero {
      */
     public void borrAluCurso(int idAlu) {
         ArrayList<Curso> cursos = leerText();
+        Curso cur =null;
+        int alumnoBorrar = 0;
         if (!cursos.isEmpty()) {
             for (Curso c : cursos) {
-                for (String s : c.getAlumnos()) {
-                    if (idAlu == (Integer.parseInt(s.trim()))) {
-                        c.removeAlu(Integer.parseInt(s.trim()));
-
+                if(!c.getAlumnos().isEmpty()) {
+                    for (String s : c.getAlumnos()) {
+                        if (idAlu == (Integer.parseInt(s.trim()))) {
+                            cur = c;
+                            alumnoBorrar = Integer.parseInt(s.trim());
+                        }
                     }
+                    cur.removeAlu(alumnoBorrar);
                 }
             }
+
             guardarText(cursos);
 
         }
