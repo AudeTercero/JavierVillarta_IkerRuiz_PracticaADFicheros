@@ -4,7 +4,6 @@ package org.example;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 /**
  * Clase que implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para gestionar cursos.
  */
