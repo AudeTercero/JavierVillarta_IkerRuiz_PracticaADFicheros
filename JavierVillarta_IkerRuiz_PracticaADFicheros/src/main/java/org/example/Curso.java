@@ -223,8 +223,7 @@ public class Curso {
      */
     @Override
     public String toString() {
-        return "Curso [codCur=" + codCur + ", nombre=" + nombre + ", descripcion=" + descripcion + ", Profesor=" + ", Alumnos=" + alumnoCadena()
-                + "]";
+        return "Curso [codCur=" + codCur + ", nombre=" + nombre + ", descripcion=" + descripcion + ", Profesor=" + ", Alumnos=" + alumnoCadena() + "]";
     }
 
 }
