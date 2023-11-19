@@ -31,13 +31,10 @@ public class Profesor implements Serializable {
 
 	}
 
-	public Profesor(int idProfe, String dni, String nombre, String direccion, String telefono) {
-		this.idProfe = idProfe;
-		this.dni = dni;
-		this.nombre = nombre;
-		this.direccion = direccion;
-		this.telefono = telefono;
-	}
+	/**
+	 * Metodo para generar una id en orden con respecto a los guardados en el fichero
+	 * @return un int que va a ser una id
+	 */
 	public int nuevoExpediente() {
 		Fichero fich = new Fichero();
 		int aux = 0;
@@ -55,6 +52,10 @@ public class Profesor implements Serializable {
 		return aux;
 	}
 
+	/**
+	 * Metodo get de la id del profesor
+	 * @return devuelve una id
+	 */
 	public int getIdProfe() {
 		return idProfe;
 	}
