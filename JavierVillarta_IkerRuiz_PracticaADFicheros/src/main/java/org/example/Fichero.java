@@ -824,16 +824,5 @@ public class Fichero {
         return nomCursos;
     }
 
-    /**
-     * Metodo para borrar un alumno de todos los cursos
-     */
-    public void borrarAlumnoCursos() {
-
-    }
-
-    /**
-     * Metodo para borrar un profesor de todos los cursos
-     */
-
 
 }

@@ -63,7 +63,7 @@ public class GestionCursos implements ICRUD {
         do {
             fallo = false;
             System.out.println("Introduce el nombre del curso:");
-            nombre = sc.nextLine();
+            nombre = sc.nextLine().trim();
             try {
                 verif.hayAlgo(nombre);
                 fich.cursRepe(nombre);
@@ -81,7 +81,7 @@ public class GestionCursos implements ICRUD {
             do {// Inicio de do while que controla si hay fallo
                 fallo = false;
                 System.out.println("Introduce la descripcion del Curso:");
-                descripcion = sc.nextLine();
+                descripcion = sc.nextLine().trim();
                 try {
                     verif.hayAlgo(descripcion);
                 } catch (MisExceptions e) {
@@ -106,7 +106,7 @@ public class GestionCursos implements ICRUD {
         String op;
         boolean existe = false;
         System.out.println("Introduzca el nombre de curso");
-        String nombreCurso = sc.nextLine();
+        String nombreCurso = sc.nextLine().trim();
         Curso curso = null;
         ArrayList<Curso> cursos = fich.leerText();
 
@@ -121,7 +121,7 @@ public class GestionCursos implements ICRUD {
             if (existe) {
                 do {
                     System.out.println("Seguro que quieres eliminar este curso? \n [S/N]");
-                    op = sc.nextLine();
+                    op = sc.nextLine().trim();
 
                     if (op.equalsIgnoreCase("s")) {
                         System.out.println("Curso borrado con exito!");
@@ -151,7 +151,7 @@ public class GestionCursos implements ICRUD {
      */
     public void modificar() {
         System.out.println("Introduzca el nombre de curso");
-        String nombreCurso = sc.nextLine();
+        String nombreCurso = sc.nextLine().trim();
         ArrayList<Curso> cursos = fich.leerText();
         Curso curso = null;
 
@@ -170,7 +170,7 @@ public class GestionCursos implements ICRUD {
                         "****MENU MODIFICACION PARA EL CURSO: " + curso.getNombre() + "****");
                 System.out.println(
                         "1. Modificar Nombre \n2. Modificar descripcion \n0. Salir \n");
-                opc = sc.nextLine();
+                opc = sc.nextLine().trim();
                 switch (opc) {
                     case "1":
                         boolean nombreBien = true;
@@ -179,7 +179,7 @@ public class GestionCursos implements ICRUD {
                         String newNombre;
                         do {
                             System.out.println("Introduzca el nuevo nombre:");
-                            newNombre = sc.nextLine();
+                            newNombre = sc.nextLine().trim();
                             for (Curso c : cursos) {
                                 if (newNombre.equalsIgnoreCase(c.getNombre())) {
                                     nombreExist = true;
@@ -208,7 +208,7 @@ public class GestionCursos implements ICRUD {
                         boolean nomBien = true;
                         do {
                             System.out.println("Introduzca la nueva descripcion:");
-                            newDes = sc.nextLine();
+                            newDes = sc.nextLine().trim();
                             try {
                                 verif.hayAlgo(newDes);
                             } catch (MisExceptions e) {
@@ -243,7 +243,7 @@ public class GestionCursos implements ICRUD {
      */
     public void buscar() {
         System.out.println("Introduzca el nombre de curso");
-        String nombreCurso = sc.nextLine();
+        String nombreCurso = sc.nextLine().trim();
         fich.mostrarUnoText(nombreCurso);
 
     }

@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.File;
 import java.util.Scanner;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class GestionProfesores implements ICRUD {
 		do {// Inicio de do while que controla si hay fallo
 			fallo = false;
 			System.out.println("Introduce el dni del Profesor:");
-			dni = sc.nextLine();
+			dni = sc.nextLine().trim();
 			try {
 				verif.hayAlgo(dni);
 			} catch (MisExceptions e) {
@@ -80,7 +81,7 @@ public class GestionProfesores implements ICRUD {
 			do {// Inicio de do while que controla si hay fallo
 				fallo = false;
 				System.out.println("Introduce el nombre del Profesor:");
-				nombre = sc.nextLine();
+				nombre = sc.nextLine().trim();
 				try {
 					verif.hayAlgo(nombre);
 				} catch (MisExceptions e) {
@@ -96,7 +97,7 @@ public class GestionProfesores implements ICRUD {
 				do {// Inicio de do while que controla si hay fallo
 					fallo = false;
 					System.out.println("Introduce la direccion del Profesor:");
-					direccion = sc.nextLine();
+					direccion = sc.nextLine().trim();
 					try {
 						verif.hayAlgo(direccion);
 					} catch (MisExceptions e) {
@@ -115,7 +116,7 @@ public class GestionProfesores implements ICRUD {
 					do {
 						fallo = false;
 						System.out.println("Introduce el telefono del Profesor:");
-						telefono = sc.nextLine();
+						telefono = sc.nextLine().trim();
 						try {
 							verif.esNum(telefono);
 							verif.nueveCaracteres(telefono);
@@ -222,7 +223,7 @@ public class GestionProfesores implements ICRUD {
 				boolean salir = false;
 				do {
 					System.out.println("Introduce el dni del profesor a modificar o 0 para salir");
-					dni = sc.nextLine();
+					dni = sc.nextLine().trim();
 					if (dni.equalsIgnoreCase("0")) {
 						salir = true;
 					} else {
@@ -238,7 +239,7 @@ public class GestionProfesores implements ICRUD {
 							do {
 								System.out.println("Quiere modificar al profesor " + profeAux.getNombre() + " con dni "
 										+ profeAux.getDni() + " \n [S/N]");
-								String confirm = sc.nextLine();
+								String confirm = sc.nextLine().trim();
 								if (confirm.equalsIgnoreCase("S")) {
 									salir = true;
 
@@ -248,7 +249,7 @@ public class GestionProfesores implements ICRUD {
 									System.out.println("Modificacion cancelada");
 
 								} else {
-									System.out.println("Error, no es ningun de las opciones ofrecidas");
+									System.err.println("Error, no es ningun de las opciones ofrecidas");
 								}
 							} while (!salir && !dni.equalsIgnoreCase("0"));
 
@@ -272,7 +273,7 @@ public class GestionProfesores implements ICRUD {
 								"****MENU MODIFICACION PARA EL PROFESOR CON DNI: " + profeAux.getDni() + "****");
 						System.out.println(
 								"1. Modificar Dni \n2. Modificar Nombre \n3. Modificar direccion \n4. Modificar telefono \n0. Salir \n");
-						opc = sc.nextLine();
+						opc = sc.nextLine().trim();
 						switch (opc) {
 						case "1":
 							boolean dniBien = true;
@@ -281,7 +282,7 @@ public class GestionProfesores implements ICRUD {
 							String newDni;
 							do {
 								System.out.println("Introduzca el nuevo dni:");
-								newDni = sc.nextLine();
+								newDni = sc.nextLine().trim();
 								for (Profesor p : profesores) {
 									if (newDni.equalsIgnoreCase(p.getDni())) {
 										dniExist = true;
@@ -307,10 +308,11 @@ public class GestionProfesores implements ICRUD {
 						case "2":
 							String oldNom = profeAux.getNombre();
 							String newNom;
-							boolean nomBien = true;
+							boolean nomBien;
 							do {
+								 nomBien = true;
 								System.out.println("Introduzca el nuevo nombre:");
-								newNom = sc.nextLine();
+								newNom = sc.nextLine().trim();
 								try {
 									verif.hayAlgo(newNom);
 								} catch (MisExceptions e) {
@@ -322,12 +324,13 @@ public class GestionProfesores implements ICRUD {
 							System.out.println("Se ha modificado el nombre " + oldNom + " por el nombre " + newNom);
 							break;
 						case "3":
-							boolean direBien = true;
+							boolean direBien;
 							String oldDire = profeAux.getDireccion();
 							String newDire;
 							do {
+								direBien = true;
 								System.out.println("Introduzca la nuevo direccion:");
-								newDire = sc.nextLine();
+								newDire = sc.nextLine().trim();
 								try {
 									verif.hayAlgo(newDire);
 								} catch (MisExceptions e) {
@@ -341,12 +344,13 @@ public class GestionProfesores implements ICRUD {
 									"Se ha modificado la direccion " + oldDire + " por la direccion " + newDire);
 							break;
 						case "4":
-							boolean telBien = true;
+							boolean telBien;
 							String oldTel = profeAux.getTelefono();
 							String newTel;
 							do {
+								telBien = true;
 								System.out.println("Introduzca el nuevo telefono:");
-								newTel = sc.nextLine();
+								newTel = sc.nextLine().trim();
 								try {
 									verif.nueveCaracteres(newTel);
 									verif.esNum(newTel);
@@ -385,12 +389,15 @@ public class GestionProfesores implements ICRUD {
 	 */
 	public void buscar() {
 		String dni;
-
-		do {
-			System.out.println("Introduce el dni del profesor que quiera buscar o pulsa 0 para salir");
-			dni = sc.nextLine();
-			fich.mostrarUnoSer(dni.trim());
-		} while (!dni.equalsIgnoreCase("0"));
+		File file = new File("Profesores.ser");
+		if(file.exists()) {
+			do {
+				System.out.println("Introduce el dni del profesor que quiera buscar o pulsa 0 para salir");
+				dni = sc.nextLine().trim();
+				fich.mostrarUnoSer(dni.trim());
+			} while (!dni.equalsIgnoreCase("0"));
+		}else
+			System.out.println("No hay profesores guardados");
 
 	}
 
