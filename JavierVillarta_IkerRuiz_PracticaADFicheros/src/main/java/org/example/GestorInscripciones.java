@@ -133,9 +133,11 @@ public class GestorInscripciones {
         String op;
         boolean puedeGuardar = false;
         boolean registrado = false;
+
         System.out.println("Escriba el DNI del profesor");
         String dni = sc.nextLine();
         Profesor profe = fich.existProfe(dni);
+
 
 
         if (profe != null) {
@@ -170,7 +172,12 @@ public class GestorInscripciones {
                                 op = sc.nextLine();
 
                                 if (op.equalsIgnoreCase("S")) {
-                                    puedeGuardar = true;
+                                    cursos.remove(curso);
+                                    curso.setProfe("" + profe.getIdProfe());
+                                    cursos.add(curso);
+                                    System.out.println("Profesor inscrito con exito!");
+                                    puedeGuardar = false;
+                                    registrado = true;
 
                                 } else if (op.equalsIgnoreCase("N")) {
                                     puedeGuardar = false;
@@ -219,6 +226,8 @@ public class GestorInscripciones {
             } else {
                 System.out.println("No hay ningun profesor con ese DNI");
             }
+        }else{
+            System.out.println("No se ha encontrado un profesor con ese dni");
         }
     }
 

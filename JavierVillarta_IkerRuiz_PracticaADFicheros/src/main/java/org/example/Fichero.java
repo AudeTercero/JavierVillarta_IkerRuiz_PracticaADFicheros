@@ -67,7 +67,7 @@ public class Fichero {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
 
@@ -613,7 +613,7 @@ public class Fichero {
                     System.out.println("Alumnos: " + nomApe.toString());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
 
             }
         } else {
@@ -685,7 +685,7 @@ public class Fichero {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
 
         }
         if (!encontrado) {
