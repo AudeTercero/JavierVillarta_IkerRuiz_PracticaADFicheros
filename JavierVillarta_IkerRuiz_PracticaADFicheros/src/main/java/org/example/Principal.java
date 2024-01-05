@@ -2,12 +2,12 @@ package org.example;
 
 import java.util.Scanner;
 /**
- * Clase que representa el programa principal del Centro de Formación.
+ * Clase que representa el programa principal del Centro de Formacion.
  */
 public class Principal {
 
     /**
-     * Método principal que inicia la ejecución del programa.
+     * Metodo principal que inicia la ejecucion del programa.
      *
      * @param args Los argumentos de la línea de comandos (no se utilizan en este programa).
      */

@@ -712,7 +712,8 @@ public class Fichero {
                             alumnoBorrar = Integer.parseInt(s.trim());
                         }
                     }
-                    cur.removeAlu(alumnoBorrar);
+                    if(alumnoBorrar != 0)
+                        cur.removeAlu(alumnoBorrar);
                 }
             }
 
