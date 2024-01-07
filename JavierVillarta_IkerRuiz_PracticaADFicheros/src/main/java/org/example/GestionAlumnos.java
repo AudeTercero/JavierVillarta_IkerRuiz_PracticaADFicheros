@@ -232,6 +232,7 @@ public class GestionAlumnos implements ICRUD {
                             salir = true;
                         } else if ((op.equalsIgnoreCase("N"))) {
                             salir = true;
+                            System.out.println("Saliendo sin borrar alumno");
                         } else {
                             System.out.println("Entrada invalida");
                         }

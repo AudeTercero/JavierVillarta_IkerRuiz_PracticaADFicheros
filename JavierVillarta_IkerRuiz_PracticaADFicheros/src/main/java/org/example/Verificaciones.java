@@ -1,5 +1,6 @@
 package org.example;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 /**
@@ -70,7 +71,7 @@ public class Verificaciones {
             int dia = Integer.parseInt(partes[2]);
 
             // Verificar si el anio es valido
-            if (anio < 2000 || anio > 2100) {
+            if (anio < 1970 || anio > 2100) {
                 throw new MisExceptions("Introduce un anio valido");
             }
 
@@ -108,7 +109,7 @@ public class Verificaciones {
      * @throws MisExceptions Si la cadena esta vacia.
      */
     public void hayAlgo(String cadena) throws MisExceptions {// verifica si ha escrito algo
-        if (cadena.length() == 4) {
+        if (cadena.length() < 4) {
             throw new MisExceptions("No ha escrito nada o es demasiado corto, por favor rellene el campo correctamente");
         }
     }

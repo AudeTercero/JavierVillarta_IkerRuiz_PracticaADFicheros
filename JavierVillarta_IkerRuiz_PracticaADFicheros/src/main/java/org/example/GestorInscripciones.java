@@ -23,31 +23,31 @@ public class GestorInscripciones {
 
             switch (op) {
                 case "1":
-                    if (fich.existeCurso() && (fich.existeProfe() || fich.existeAlu()))
+                    if (fich.existeCurso() && fich.existeAlu())
                         inscribirAlumno();
                     else
-                        System.out.println("Falta lagun fichero para realizar esta operacion");
+                        System.out.println("Falta algun fichero para realizar esta operacion");
 
                     break;
                 case "2":
-                    if (fich.existeCurso() && (fich.existeProfe() || fich.existeAlu()))
+                    if (fich.existeCurso() && fich.existeProfe())
                         inscribirProfesor();
                     else
-                        System.out.println("Falta lagun fichero para realizar esta operacion");
+                        System.out.println("Falta algun fichero para realizar esta operacion");
 
                     break;
                 case "3":
-                    if (fich.existeCurso() && (fich.existeProfe() || fich.existeAlu()))
+                    if (fich.existeCurso() && fich.existeAlu())
                         bajaAlumno();
                     else
-                        System.out.println("Falta lagun fichero para realizar esta operacion");
+                        System.out.println("Falta algun fichero para realizar esta operacion");
 
                     break;
                 case "4":
-                    if (fich.existeCurso() && (fich.existeProfe() || fich.existeAlu()))
+                    if (fich.existeCurso() && fich.existeProfe())
                         bajaProfesor();
                     else
-                        System.out.println("Falta lagun fichero para realizar esta operacion");
+                        System.out.println("Falta algun fichero para realizar esta operacion");
 
                     break;
                 case "0":
