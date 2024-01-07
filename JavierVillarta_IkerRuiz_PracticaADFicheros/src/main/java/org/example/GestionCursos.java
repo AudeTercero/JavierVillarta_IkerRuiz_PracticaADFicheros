@@ -18,7 +18,7 @@ public class GestionCursos implements ICRUD {
     public void menu() {
         System.out.println("-- GESTION CURSOS --");
 
-        String op ;
+        String op;
 
         do {
             System.out.println("\n Selecciona una opcion: \n 1.Crear Cursos \n 2.Borrar Cursos "
@@ -30,16 +30,31 @@ public class GestionCursos implements ICRUD {
                     alta();
                     break;
                 case "2":
-                    baja();
+                    if (fich.existeCurso())
+                        baja();
+                    else
+                        System.out.println("Aun no hay cursos");
                     break;
                 case "3":
-                    modificar();
+                    if (fich.existeCurso())
+                        modificar();
+                    else
+                        System.out.println("Aun no hay cursos");
+
                     break;
                 case "4":
-                    buscar();
+                    if (fich.existeCurso())
+                        buscar();
+                    else
+                        System.out.println("Aun no hay cursos");
+
                     break;
                 case "5":
-                    mostrar();
+                    if (fich.existeCurso())
+                        mostrar();
+                    else
+                        System.out.println("Aun no hay cursos");
+
                     break;
                 case "0":
                     System.out.println("Saliendo... \n");
@@ -251,7 +266,7 @@ public class GestionCursos implements ICRUD {
      * Metodo para mostrar cursos
      */
     public void mostrar() {
-       fich.mostrarText();
+        fich.mostrarText();
 
     }
 

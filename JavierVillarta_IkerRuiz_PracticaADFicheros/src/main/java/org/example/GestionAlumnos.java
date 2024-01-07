@@ -28,18 +28,35 @@ public class GestionAlumnos implements ICRUD {
             switch (op) {
                 case "1":
                     alta();
+
                     break;
                 case "2":
-                    baja();
+                    if (fich.existeCurso())
+                        baja();
+                    else
+                        System.out.println("Aun no hay alumnos");
+
                     break;
                 case "3":
-                    modificar();
+                    if (fich.existeCurso())
+                        modificar();
+                    else
+                        System.out.println("Aun no hay alumnos");
+
                     break;
                 case "4":
-                    buscar();
+                    if (fich.existeCurso())
+                        buscar();
+                    else
+                        System.out.println("Aun no hay alumnos");
+
                     break;
                 case "5":
-                    mostrar();
+                    if (fich.existeCurso())
+                        mostrar();
+                    else
+                        System.out.println("Aun no hay alumnos");
+
                     break;
                 case "0":
                     System.out.println("Saliendo... \n");

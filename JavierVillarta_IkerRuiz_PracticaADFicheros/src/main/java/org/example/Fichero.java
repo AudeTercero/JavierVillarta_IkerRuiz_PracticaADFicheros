@@ -824,6 +824,42 @@ public class Fichero {
 
         return nomCursos;
     }
+    /**
+     * Metodo que comprueba si existe el fichero
+     * @return booleano
+     */
+    public boolean existeProfe(){
+        File file = new File(RUTA_PROFESORES);
+        ArrayList<Profesor> profesores = leerSer();
+        if (file.exists() && !profesores.isEmpty()){
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Metodo que comprueba si existe el fichero
+     * @return booleano
+     */
+    public boolean existeCurso(){
+        File file = new File(RUTA_CURSOS);
+        ArrayList<Curso> cursos = leerText();
+        if (file.exists() && !cursos.isEmpty()){
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Metodo que comprueba si existe el fichero
+     * @return booleano
+     */
+    public boolean existeAlu(){
+        File file = new File(RUTA_ALUMNOS);
+        ArrayList<Alumno> alumnos = leerBin();
+        if (file.exists() && !alumnos.isEmpty()){
+            return true;
+        }
+        return false;
+    }
 
 
 }

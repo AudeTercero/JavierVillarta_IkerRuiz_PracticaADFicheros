@@ -23,16 +23,32 @@ public class GestorInscripciones {
 
             switch (op) {
                 case "1":
-                    inscribirAlumno();
+                    if (fich.existeCurso() && (fich.existeProfe() || fich.existeAlu()))
+                        inscribirAlumno();
+                    else
+                        System.out.println("Falta lagun fichero para realizar esta operacion");
+
                     break;
                 case "2":
-                    inscribirProfesor();
+                    if (fich.existeCurso() && (fich.existeProfe() || fich.existeAlu()))
+                        inscribirProfesor();
+                    else
+                        System.out.println("Falta lagun fichero para realizar esta operacion");
+
                     break;
                 case "3":
-                    bajaAlumno();
+                    if (fich.existeCurso() && (fich.existeProfe() || fich.existeAlu()))
+                        bajaAlumno();
+                    else
+                        System.out.println("Falta lagun fichero para realizar esta operacion");
+
                     break;
                 case "4":
-                    bajaProfesor();
+                    if (fich.existeCurso() && (fich.existeProfe() || fich.existeAlu()))
+                        bajaProfesor();
+                    else
+                        System.out.println("Falta lagun fichero para realizar esta operacion");
+
                     break;
                 case "0":
                     System.out.println("Saliendo... \n");
@@ -139,7 +155,6 @@ public class GestorInscripciones {
         Profesor profe = fich.existProfe(dni);
 
 
-
         if (profe != null) {
 
             System.out.println("Escriba el nombre del curso");
@@ -226,7 +241,7 @@ public class GestorInscripciones {
             } else {
                 System.out.println("No hay ningun profesor con ese DNI");
             }
-        }else{
+        } else {
             System.out.println("No se ha encontrado un profesor con ese dni");
         }
     }
