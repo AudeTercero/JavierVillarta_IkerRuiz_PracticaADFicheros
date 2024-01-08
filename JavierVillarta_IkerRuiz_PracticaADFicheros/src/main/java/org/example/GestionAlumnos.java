@@ -204,41 +204,51 @@ public class GestionAlumnos implements ICRUD {
 
         if (!alumnos.isEmpty()) {
             do {
-                System.out.println("Introduce el nombre del alumno");
+                System.out.println("Introduce el nombre del alumno o pulsa 0 para salir");
                 String nom = sc.nextLine().trim();
-                System.out.println("Introduce los apellidos del alumno");
-                String ape = sc.nextLine().trim();
 
-                for (Alumno alumno : alumnos) {
-                    if (alumno.getNombre().equalsIgnoreCase(nom) && alumno.getApellidos().equalsIgnoreCase(ape)) {
-                        existe = true;
-                        eliminado = alumno;//Guardamos el alumno ya que no podemos eliminarlo mientras iteramos pues puede fallar
+                if (nom.equalsIgnoreCase("0")) {
+                    salir = true;
+                }else {
+                    System.out.println("Introduce los apellidos del alumno o pulsa 0 para salir");
+                    String ape = sc.nextLine().trim();
+
+                    if (ape.equalsIgnoreCase("0")){
+                        salir = true;
+                    }else {
+                        for (Alumno alumno : alumnos) {
+                            if (alumno.getNombre().equalsIgnoreCase(nom) && alumno.getApellidos().equalsIgnoreCase(ape)) {
+                                existe = true;
+                                eliminado = alumno;//Guardamos el alumno ya que no podemos eliminarlo mientras iteramos pues puede fallar
+                            }
+                        }
+
+                        if (!existe) {
+                            System.out.println("El alumno no existe");
+
+                        } else {
+                            do {
+                                System.out.println("Seguro que deseas borrar el alumno? \n [S/N]");
+                                op = sc.nextLine();
+
+                                if (op.equalsIgnoreCase("S")) {
+                                    fich.borrAluCurso(eliminado.getNumExpediente());
+                                    alumnos.remove(eliminado);
+                                    fich.guardarBin(alumnos);
+                                    System.out.println("Alumno Borrado.");
+                                    salir = true;
+                                } else if ((op.equalsIgnoreCase("N"))) {
+                                    salir = true;
+                                    System.out.println("Saliendo sin borrar alumno");
+                                } else {
+                                    System.out.println("Entrada invalida");
+                                }
+
+                            } while (!salir);
+                        }
                     }
                 }
 
-                if (!existe) {
-                    System.out.println("El alumno no existe");
-
-                } else {
-                    do {
-                        System.out.println("Seguro que deseas borrar el alumno? \n [S/N]");
-                        op = sc.nextLine();
-
-                        if (op.equalsIgnoreCase("S")) {
-                            fich.borrAluCurso(eliminado.getNumExpediente());
-                            alumnos.remove(eliminado);
-                            fich.guardarBin(alumnos);
-                            System.out.println("Alumno Borrado.");
-                            salir = true;
-                        } else if ((op.equalsIgnoreCase("N"))) {
-                            salir = true;
-                            System.out.println("Saliendo sin borrar alumno");
-                        } else {
-                            System.out.println("Entrada invalida");
-                        }
-
-                    } while (!salir);
-                }
             } while (!alumnos.isEmpty() && !salir);
 
         } else {

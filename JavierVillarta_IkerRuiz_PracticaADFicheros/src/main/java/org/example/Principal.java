@@ -9,7 +9,7 @@ public class Principal {
     /**
      * Metodo principal que inicia la ejecucion del programa.
      *
-     * @param args Los argumentos de la línea de comandos (no se utilizan en este programa).
+     * @param args Los argumentos de la linea de comandos (no se utilizan en este programa).
      */
     public static void main(String[] args) {
 
